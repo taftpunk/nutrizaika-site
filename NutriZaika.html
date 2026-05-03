@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23004B49'/%3E%3Crect width='32' height='32' rx='7' fill='none' stroke='%23D4AF37' stroke-width='1.5'/%3E%3Cpath d='M16 5.5C12 10 10.5 13 10.5 16.5a5.5 5.5 0 0 0 11 0c0-3.5-1.5-6.5-5.5-11Z' fill='none' stroke='%23D4AF37' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M14 19.5c.7-2.2 2.8-3.6 4.2-5.8' fill='none' stroke='%23D4AF37' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"/>
 
 <style>
 /* ────────────────────────────────────────────────────────────
@@ -1599,8 +1600,9 @@ p { color: var(--txt-muted); max-width: 64ch; }
 .pricing-card.signature .pricing-cta-btn:hover { background: var(--gold-hover); border-color: var(--gold-hover); }
 
 .pricing-note {
-  text-align: center; margin-top: 1.75rem;
+  text-align: center; margin: 1.75rem auto 0;
   font-size: .8rem; color: var(--txt-faint); font-family: var(--ff-mono); letter-spacing: .06em;
+  max-width: 56ch;
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -1674,6 +1676,115 @@ p { color: var(--txt-muted); max-width: 64ch; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ────────────────────────────────────────────────────────────
+   WHATSAPP TESTIMONIAL RIBBON
+   ──────────────────────────────────────────────────────────── */
+.wa-ribbon {
+  overflow: hidden;
+  padding: 1.5rem 0 2rem;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+}
+.wa-track {
+  display: flex;
+  gap: 1.25rem;
+  width: max-content;
+  animation: marquee 52s linear infinite;
+}
+.wa-track:hover { animation-play-state: paused; }
+.wa-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 1.5rem;
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .3s, transform .3s var(--ease);
+}
+.wa-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.wa-header { display: flex; align-items: center; gap: .75rem; }
+.wa-avatar {
+  width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  background: var(--primary-light); color: var(--primary);
+  display: grid; place-items: center;
+  font-weight: 700; font-size: .95rem; flex-shrink: 0;
+}
+.wa-name { font-weight: 600; font-size: .9rem; color: var(--txt); letter-spacing: -.02em; }
+.wa-meta { font-size: .7rem; color: var(--txt-faint); font-family: var(--ff-mono); margin-top: .1rem; }
+.wa-bubble {
+  font-size: .83rem; line-height: 1.55;
+  padding: .75rem 1rem; border-radius: var(--r-lg);
+}
+.wa-bubble-in {
+  background: #eef3ee;
+  color: var(--txt);
+  border-bottom-left-radius: var(--r-sm);
+}
+.wa-bubble-out {
+  background: var(--primary);
+  color: rgba(255,255,255,.92);
+  border-bottom-right-radius: var(--r-sm);
+  align-self: flex-end;
+  font-size: .8rem;
+}
+.wa-result {
+  margin-top: auto; padding-top: .6rem;
+  border-top: 1px solid var(--border);
+}
+.wa-tag {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid var(--primary-mid);
+  border-radius: var(--r-full);
+  padding: .28rem .8rem;
+  font-size: .71rem; font-family: var(--ff-mono); font-weight: 500; letter-spacing: .04em;
+}
+.see-more-reviews {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .85rem; font-weight: 600; color: var(--primary);
+  border-bottom: 1.5px solid var(--primary-mid); padding-bottom: .15rem;
+  transition: color .25s, border-color .25s, gap .3s var(--ease);
+  letter-spacing: -.01em;
+}
+.see-more-reviews:hover { color: var(--primary-h); border-color: var(--primary); gap: .7rem; }
+
+/* Team card hover (moved from inline <style>) */
+.team-card { transition: box-shadow .35s var(--ease), transform .35s var(--ease); }
+.team-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+/* ────────────────────────────────────────────────────────────
+   MOBILE OVERRIDES
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .section-h2 { font-size: clamp(1.7rem, 5vw, 2.4rem); }
+  .contact-grid { grid-template-columns: 1fr; }
+  .cta-inner { gap: 2rem; }
+  .cta-btns { flex-direction: column; align-items: flex-start; gap: .65rem; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+}
+@media (max-width: 680px) {
+  .section-h2 { font-size: clamp(1.5rem, 7vw, 2rem); }
+  .wa-card { width: 280px; padding: 1.15rem; }
+  .about-grid { gap: 2rem; }
+  .about-brand-card { aspect-ratio: auto; padding: 2rem 1.5rem; min-height: 340px; }
+  .about-cred-card { position: static; max-width: none; margin-top: 1rem; border-radius: var(--r-lg); }
+  .team-grid { grid-template-columns: 1fr !important; }
+  .team-card { padding: 1.25rem !important; }
+  .cta-btns .btn { width: 100%; justify-content: center; text-align: center; }
+  .hero { padding-top: 5rem; }
+  .hero h1 { font-size: clamp(2rem, 10vw, 3rem); }
+  .pricing-note { font-size: .75rem; }
+}
+@media (max-width: 400px) {
+  .wa-card { width: 260px; }
+  .pricing-card { padding: 1.5rem; }
 }
 </style>
 </head>
@@ -2107,33 +2218,145 @@ p { color: var(--txt-muted); max-width: 64ch; }
 </section>
 
 <!-- ─── TESTIMONIALS ───────────────────────────────────────── -->
-<section class="section" id="testimonials">
+<section class="section" id="testimonials" style="overflow:hidden;padding-bottom:1rem">
   <div class="wrap">
     <div class="section-header reveal" style="text-align:center;max-width:620px;margin:0 auto 3rem">
       <div class="label-line" style="justify-content:center"><span class="label">Client Results</span></div>
       <h2 class="section-h2">Real people. <em>Real results.</em></h2>
     </div>
-    <div class="testi-grid">
-      <article class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
-        <blockquote>"I am really thankful for the effort and support you put into my diet plan — every time I eat something, I am like Dayummm, this girl did a great job with this diet chart. Love and Love from my heart, Nida."</blockquote>
-        <div class="testi-result">↗ 70kg → 66.4kg</div>
-        <div class="testi-footer"><div class="testi-avatar">L</div><div><strong>Layba Jawad Mir</strong><span>Weight Management · Lahore</span></div></div>
-      </article>
-      <article class="testi-card reveal delay-1">
-        <div class="testi-stars">★★★★★</div>
-        <blockquote>"Thank you so so much. This is just because of you. I started with 94 kgs. It just changed my whole life. I don't know how to thank you."</blockquote>
-        <div class="testi-result">↗ 94kg → 67kg · −27kg</div>
-        <div class="testi-footer"><div class="testi-avatar">A</div><div><strong>Ayesha Wali</strong><span>Weight Management · Lahore</span></div></div>
-      </article>
-      <article class="testi-card reveal delay-2">
-        <div class="testi-stars">★★★★★</div>
-        <blockquote>"Alhamdulillah it's going great. I'm 100 kgs now. I feel so light and energetic. Everyone has started noticing the change. Lost around 16 kgs. Allah ka shukar."</blockquote>
-        <div class="testi-result">↗ Lost 16kg · Energy restored</div>
-        <div class="testi-footer"><div class="testi-avatar">A</div><div><strong>Asiya Qasim</strong><span>Weight Management · Lahore</span></div></div>
-      </article>
-    </div>
   </div>
+
+  <!-- Scrolling ribbon — track duplicated for seamless loop -->
+  <div class="wa-ribbon" aria-label="Client testimonials">
+    <div class="wa-track">
+
+      <!-- Card 1 -->
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar">L</div>
+          <div><div class="wa-name">Layba Jawad Mir</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"I am really thankful for the effort and support you put into my diet plan — every time I eat something, I am like Dayummm, this girl did a great job with this diet chart. Love and Love from my heart, Nida ❤️"</div>
+        <div class="wa-result"><span class="wa-tag">70kg → 66.4kg</span></div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:var(--clay-light);color:var(--clay)">A</div>
+          <div><div class="wa-name">Ayesha Wali</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Thank you so so much. This is just because of you. I started with 94 kgs. It just changed my whole life. I don't know how to thank you."</div>
+        <div class="wa-bubble wa-bubble-out">"And I really appreciate your consistency — you have been an amazing client 💕"</div>
+        <div class="wa-result"><span class="wa-tag">94kg → 67kg · −27kg</span></div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:var(--gold-light);color:var(--gold-hover)">A</div>
+          <div><div class="wa-name">Asiya Qasim</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Alhamdulillah it's going great. I'm 100 kgs now. I feel so light and energetic. Everyone has started noticing the change. Lost around 16 kgs. Allah ka shukar."</div>
+        <div class="wa-result"><span class="wa-tag">−16kg · Energy restored</span></div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:#e8f0fe;color:#3c5acd">A</div>
+          <div><div class="wa-name">Aemin Waqar</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Aoa Nadia, I wanted to thank you for your support and effort. Although I lost 6 kgs, went to 83 from 89 — it was a wonderful journey with you. MAY ALLAH BLESS YOU ALWAYS."</div>
+        <div class="wa-bubble wa-bubble-in">"Woahhhh 83 after ages! Thank you lady! Though I have lost my muscle weight because I haven't been able to workout since last two weeks due to severe back pain but I still lost weight, Inshallah will be back to my workout track."</div>
+        <div class="wa-result"><span class="wa-tag">89kg → 83kg · −6kg</span></div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:var(--primary-light);color:var(--primary)">B</div>
+          <div><div class="wa-name">Bariah Rafiq</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Thank you for your guidance and concern Nida. Would be subscribing again because I have a long way to go :) So far so good. Keep me in prayers."</div>
+        <div class="wa-bubble wa-bubble-in">"It was 91 kgs [starting weight]. Alhamdolillah. You've been great with me ✨"</div>
+        <div class="wa-bubble wa-bubble-out">"Ma Sha Allah that's great progress 😍🤗 You've lost 7 kgs!"</div>
+        <div class="wa-result"><span class="wa-tag">91kg → 84kg · −7kg</span></div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:#f3e8ff;color:#7c3aed">R</div>
+          <div><div class="wa-name">Ramal Naveed</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Alhamdulillah I am 196lbs from 210lbs in 3 months. It's been a really knowledgeable journey. I have learnt to control my eating habits and how to be consistent and get back on track even if I binge."</div>
+        <div class="wa-bubble wa-bubble-in">"You are really nice and always answered my questions well. I'll rejoin after a short break in sha Allah."</div>
+        <div class="wa-result"><span class="wa-tag">210lbs → 196lbs · 3 months</span></div>
+      </div>
+
+      <!-- Duplicate set for seamless loop -->
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar">L</div>
+          <div><div class="wa-name">Layba Jawad Mir</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"I am really thankful for the effort and support you put into my diet plan — every time I eat something, I am like Dayummm, this girl did a great job with this diet chart. Love and Love from my heart, Nida ❤️"</div>
+        <div class="wa-result"><span class="wa-tag">70kg → 66.4kg</span></div>
+      </div>
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:var(--clay-light);color:var(--clay)">A</div>
+          <div><div class="wa-name">Ayesha Wali</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Thank you so so much. This is just because of you. I started with 94 kgs. It just changed my whole life. I don't know how to thank you."</div>
+        <div class="wa-bubble wa-bubble-out">"And I really appreciate your consistency — you have been an amazing client 💕"</div>
+        <div class="wa-result"><span class="wa-tag">94kg → 67kg · −27kg</span></div>
+      </div>
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:var(--gold-light);color:var(--gold-hover)">A</div>
+          <div><div class="wa-name">Asiya Qasim</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Alhamdulillah it's going great. I'm 100 kgs now. I feel so light and energetic. Everyone has started noticing the change. Lost around 16 kgs. Allah ka shukar."</div>
+        <div class="wa-result"><span class="wa-tag">−16kg · Energy restored</span></div>
+      </div>
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:#e8f0fe;color:#3c5acd">A</div>
+          <div><div class="wa-name">Aemin Waqar</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Aoa Nadia, I wanted to thank you for your support and effort. Although I lost 6 kgs, went to 83 from 89 — it was a wonderful journey with you. MAY ALLAH BLESS YOU ALWAYS."</div>
+        <div class="wa-result"><span class="wa-tag">89kg → 83kg · −6kg</span></div>
+      </div>
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:var(--primary-light);color:var(--primary)">B</div>
+          <div><div class="wa-name">Bariah Rafiq</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Thank you for your guidance and concern Nida. Would be subscribing again because I have a long way to go :) Alhamdolillah. You've been great with me ✨"</div>
+        <div class="wa-result"><span class="wa-tag">91kg → 84kg · −7kg</span></div>
+      </div>
+      <div class="wa-card">
+        <div class="wa-header">
+          <div class="wa-avatar" style="background:#f3e8ff;color:#7c3aed">R</div>
+          <div><div class="wa-name">Ramal Naveed</div><div class="wa-meta">Weight Management · Lahore</div></div>
+        </div>
+        <div class="wa-bubble wa-bubble-in">"Alhamdulillah I am 196lbs from 210lbs in 3 months. It's been a really knowledgeable journey. I have learnt to control my eating habits and how to be consistent."</div>
+        <div class="wa-result"><span class="wa-tag">210lbs → 196lbs · 3 months</span></div>
+      </div>
+
+    </div><!-- end .wa-track -->
+  </div><!-- end .wa-ribbon -->
+
+  <!-- See more reviews -->
+  <div style="text-align:center;margin-top:2rem">
+    <a href="#" class="see-more-reviews">
+      See more reviews
+      <span style="display:inline-block;transition:transform .3s var(--ease)">→</span>
+    </a>
+  </div>
+
 </section>
 
 <!-- ─── VISION DEEP DIVE ───────────────────────────────────── -->
@@ -2246,26 +2469,8 @@ p { color: var(--txt-muted); max-width: 64ch; }
           </div>
         </div>
       </div>
-      <style>
-        .team-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-        @media (max-width: 700px) { .team-grid { grid-template-columns: 1fr !important; } }
-        @media (max-width: 600px) { .team-card { padding: 1.25rem; } }
-      </style>
-      <div class="cred-stack">
-        <div class="cred-row"><div class="cred-marker"></div><div><strong>MPhil Food Sciences &amp; Human Nutrition</strong><span>Kinnaird College for Women, Lahore</span></div></div>
-        <div class="cred-row"><div class="cred-marker"></div><div><strong>BS (Hons.) Food Sciences &amp; Human Nutrition</strong><span>Kinnaird College — Principal&rsquo;s Merit List</span></div></div>
-        <div class="cred-row"><div class="cred-marker"></div><div><strong>Nutrition Consulting &amp; Weight Loss Coaching</strong><span>7+ years active practice, Lahore, Pakistan</span></div></div>
-        <div class="cred-row"><div class="cred-marker"></div><div><strong>Clinical Expertise</strong><span>Hameed Latif · Fatima Memorial · Gulab Devi · Ganga Ram Hospital</span></div></div>
-      </div>
-      <div class="skills-row">
-        <span class="skill-pill">Weight Loss Coaching</span>
-        <span class="skill-pill">Nutrition Consulting</span>
-        <span class="skill-pill">Clinical Dietetics</span>
-        <span class="skill-pill">Metabolic Health</span>
-        <span class="skill-pill">Research &amp; Publication</span>
-        <span class="skill-pill">Cardiometabolic Care</span>
-      </div>
-      <a href="#contact" class="btn btn-primary">Book a Consultation</a>
+
+      <a href="#contact" class="btn btn-primary" style="margin-top:.5rem">Book a Consultation</a>
     </div>
   </div>
 </section>
@@ -2286,11 +2491,6 @@ p { color: var(--txt-muted); max-width: 64ch; }
       <a href="mailto:nutrizaika1@gmail.com" class="btn btn-inv">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Email NutriZaika
-      </a>
-      <a href="https://forms.gle/ctLmuECVhSSzQs3N6" target="_blank" rel="noopener" class="btn btn-gold">
-        <span class="shimmer"></span>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Book Consultation
       </a>
     </div>
   </div>
