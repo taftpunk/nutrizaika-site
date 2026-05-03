@@ -1,0 +1,2948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>NutriZaika — Premium South Asian Metabolic Health Studio</title>
+<meta name="description" content="NutriZaika is a premium, data-driven health and metabolic coaching platform designed for the South Asian lifestyle. Personalised nutrition plans by Nida Tu Sehar, MPhil Food Sciences."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+<style>
+/* ────────────────────────────────────────────────────────────
+   TOKENS
+   ──────────────────────────────────────────────────────────── */
+:root {
+  --primary:        #004B49;
+  --primary-h:      #003432;
+  --primary-deep:   #002826;
+  --primary-light:  rgba(0,75,73,.07);
+  --primary-mid:    rgba(0,75,73,.16);
+  --primary-pale:   rgba(0,75,73,.03);
+
+  --clay:           #A25B44;
+  --clay-soft:      #C8755A;
+  --clay-light:     rgba(162,91,68,.10);
+  --clay-mid:       rgba(162,91,68,.20);
+
+  --gold:           #D4AF37;
+  --gold-hover:     #b99720;
+  --gold-soft:      #E6C865;
+  --gold-light:     rgba(212,175,55,.14);
+
+  --leaf:           #69C747;
+  --leaf-deep:      #3A9A28;
+
+  /* Warm bone background (better than cool grey for a wellness brand) */
+  --bg:             #F4F0E8;
+  --bg-2:           #EFE9DD;
+  --surface:        #FFFFFF;
+  --surface-warm:   #FBF7EF;
+
+  --border:         rgba(60,40,20,.10);
+  --border-strong:  rgba(60,40,20,.18);
+
+  --txt:            #15201F;
+  --txt-muted:      #4c5e5e;
+  --txt-faint:      #8c9e9e;
+
+  --r-sm:.4rem; --r-md:.75rem; --r-lg:1.25rem; --r-xl:1.875rem; --r-2xl:2.5rem; --r-full:9999px;
+
+  --shadow-sm: 0 1px 4px rgba(0,40,38,.06);
+  --shadow-md: 0 6px 24px rgba(0,40,38,.10);
+  --shadow-lg: 0 22px 54px rgba(0,40,38,.14);
+  --shadow-xl: 0 30px 80px rgba(0,40,38,.20);
+
+  --ease: cubic-bezier(.16,1,.3,1);
+  --ease-out: cubic-bezier(.22,.61,.36,1);
+
+  --ff:        'Bricolage Grotesque', system-ui, sans-serif;
+  --ff-serif:  'Instrument Serif', Georgia, serif;
+  --ff-mono:   'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* ────────────────────────────────────────────────────────────
+   RESET
+   ──────────────────────────────────────────────────────────── */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--bg); scroll-behavior: smooth; scroll-padding-top: 5.5rem; -webkit-font-smoothing: antialiased; text-size-adjust: none; }
+body { font-family: var(--ff); background: transparent; color: var(--txt); line-height: 1.65; overflow-x: hidden; }
+img { display: block; max-width: 100%; height: auto; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; }
+p { color: var(--txt-muted); max-width: 64ch; }
+::selection { background: var(--primary); color: #fff; }
+
+/* ────────────────────────────────────────────────────────────
+   AURORA BACKGROUND (kept, refined)
+   ──────────────────────────────────────────────────────────── */
+#aurora-canvas {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  z-index: -1; pointer-events: none;
+}
+.grain {
+  position: fixed; inset: 0;
+  z-index: -1; pointer-events: none;
+  opacity: .35; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence baseFrequency='.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 .3 0 0 0 0 .25 0 0 0 0 .15 0 0 0 .14 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Drifting botanicals layer — atmospheric, very subtle */
+.bg-botanicals {
+  position: fixed; inset: 0;
+  z-index: -1; pointer-events: none;
+  overflow: hidden;
+}
+.bg-botanicals .drift {
+  position: absolute;
+  opacity: .07;
+  will-change: transform;
+}
+.bg-botanicals .drift svg { display: block; width: 100%; height: 100%; }
+.drift-1 { top: 12%; left: -4%; width: 220px; height: 220px; color: var(--primary); animation: drift-a 24s ease-in-out infinite alternate; }
+.drift-2 { top: 55%; right: -3%; width: 280px; height: 280px; color: var(--clay); animation: drift-b 30s ease-in-out infinite alternate; }
+.drift-3 { bottom: 8%; left: 18%; width: 180px; height: 180px; color: var(--gold-hover); animation: drift-c 22s ease-in-out infinite alternate; }
+.drift-4 { top: 28%; right: 22%; width: 140px; height: 140px; color: var(--primary); animation: drift-d 26s ease-in-out infinite alternate; }
+@keyframes drift-a { from { transform: translate(0,0) rotate(0deg); } to { transform: translate(60px, 40px) rotate(18deg); } }
+@keyframes drift-b { from { transform: translate(0,0) rotate(0deg); } to { transform: translate(-50px, -60px) rotate(-22deg); } }
+@keyframes drift-c { from { transform: translate(0,0) rotate(0deg); } to { transform: translate(40px, -30px) rotate(14deg); } }
+@keyframes drift-d { from { transform: translate(0,0) rotate(0deg); } to { transform: translate(-35px, 50px) rotate(-12deg); } }
+
+/* Slow orbital ring drawn across the background */
+.bg-orbit {
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 140vmin; height: 140vmin;
+  transform: translate(-50%, -50%);
+  z-index: -1; pointer-events: none;
+  border: 1px dashed rgba(0,75,73,.07);
+  border-radius: 50%;
+  animation: orbit-spin 80s linear infinite;
+}
+.bg-orbit::before, .bg-orbit::after {
+  content: ''; position: absolute;
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.bg-orbit::before { top: -4px; left: 50%; background: var(--gold); opacity: .25; box-shadow: 0 0 14px var(--gold); }
+.bg-orbit::after  { bottom: -4px; right: 28%; background: var(--clay); opacity: .22; box-shadow: 0 0 14px var(--clay); }
+@keyframes orbit-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+/* Slow rising specks — like spice particles */
+.bg-particles {
+  position: fixed; inset: 0;
+  z-index: -1; pointer-events: none;
+  overflow: hidden;
+}
+.spk {
+  position: absolute; bottom: -20px;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  animation: spk-rise 18s linear infinite;
+}
+.spk:nth-child(1) { left: 8%;  animation-delay: 0s;   background: var(--primary); }
+.spk:nth-child(2) { left: 22%; animation-delay: 3s;   background: var(--gold); }
+.spk:nth-child(3) { left: 38%; animation-delay: 7s;   background: var(--clay); }
+.spk:nth-child(4) { left: 54%; animation-delay: 11s;  background: var(--primary); }
+.spk:nth-child(5) { left: 71%; animation-delay: 5s;   background: var(--gold); }
+.spk:nth-child(6) { left: 86%; animation-delay: 14s;  background: var(--clay); }
+.spk:nth-child(7) { left: 95%; animation-delay: 9s;   background: var(--primary); }
+@keyframes spk-rise {
+  0%   { transform: translateY(0)     translateX(0); opacity: 0; }
+  10%  { opacity: .6; }
+  50%  { transform: translateY(-50vh) translateX(20px); }
+  90%  { opacity: .4; }
+  100% { transform: translateY(-105vh) translateX(-20px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-orbit, .drift, .spk { animation: none !important; }
+}
+
+/* ────────────────────────────────────────────────────────────
+   CURSOR — lettuce leaf
+   ──────────────────────────────────────────────────────────── */
+@media (pointer: fine) {
+  *, *::before, *::after { cursor: none !important; }
+  #nz-cursor-leaf {
+    position: fixed; top: 0; left: 0;
+    width: 30px; height: 30px;
+    pointer-events: none; z-index: 99999;
+    transform: translate(-50%, -50%) rotate(-12deg);
+    transition: transform .3s var(--ease), filter .25s;
+    filter: drop-shadow(0 3px 6px rgba(0,80,40,.35));
+    will-change: transform, left, top;
+  }
+  #nz-cursor-leaf svg { width: 100%; height: 100%; display: block; }
+  body.cursor-hot #nz-cursor-leaf {
+    transform: translate(-50%, -50%) rotate(8deg) scale(1.35);
+    filter: drop-shadow(0 6px 14px rgba(0,80,40,.5));
+  }
+}
+@media (pointer: coarse) { #nz-cursor-leaf { display: none; } }
+
+/* ────────────────────────────────────────────────────────────
+   UTILITIES
+   ──────────────────────────────────────────────────────────── */
+.wrap { width: min(calc(100% - 3rem), 1200px); margin-inline: auto; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .7rem; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--primary);
+  padding: .45rem 1rem; border-radius: var(--r-full);
+  background: var(--primary-light); border: 1px solid var(--primary-mid);
+  font-family: var(--ff-mono);
+}
+.eyebrow-clay { color: var(--clay); background: var(--clay-light); border-color: var(--clay-mid); }
+.eyebrow-gold { color: var(--gold-hover); background: var(--gold-light); border-color: rgba(212,175,55,.28); }
+.eyebrow-inv  { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.20); color: rgba(255,255,255,.92); }
+.eyebrow .blink { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: blink 1.6s ease-in-out infinite; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+
+.label-line { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; }
+.label-line::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.label {
+  font-size: .68rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--txt-faint);
+  font-family: var(--ff-mono);
+}
+
+.section-h2 {
+  font-size: clamp(2.1rem, 3.4vw, 3.4rem);
+  font-weight: 700; letter-spacing: -.045em; line-height: 1.02;
+  color: var(--txt);
+}
+.section-h2 em {
+  font-family: var(--ff-serif); font-style: italic;
+  color: var(--primary); font-weight: 400;
+  letter-spacing: -.02em;
+}
+.section-h2 strong { color: var(--clay); font-weight: 700; }
+.section-h2 .g    { color: var(--gold-hover); }
+
+/* Reveal on scroll (IntersectionObserver applies .is-in) */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.reveal.is-in { opacity: 1; transform: none; }
+.reveal.delay-1 { transition-delay: .08s; }
+.reveal.delay-2 { transition-delay: .16s; }
+.reveal.delay-3 { transition-delay: .24s; }
+.reveal.delay-4 { transition-delay: .32s; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ────────────────────────────────────────────────────────────
+   BUTTONS — magnetic + liquid sheen
+   ──────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .9rem 1.6rem; border-radius: var(--r-full);
+  font-family: var(--ff); font-size: .875rem; font-weight: 600;
+  letter-spacing: -.005em; border: none; position: relative;
+  overflow: hidden; isolation: isolate;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  will-change: transform;
+}
+.btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle 80px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.25), transparent 60%);
+  opacity: 0; transition: opacity .3s; z-index: -1;
+}
+.btn:hover::after { opacity: 1; }
+
+.btn-primary {
+  background: var(--primary); color: #fff;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 4px 20px rgba(0,75,73,.28), inset 0 1px 0 rgba(255,255,255,.18);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,75,73,.36); }
+
+.btn-gold {
+  background: linear-gradient(135deg, #DDB94B, #b99720 60%);
+  color: #fff;
+  border: 1px solid rgba(255,220,80,.4);
+  box-shadow: 0 4px 22px rgba(212,175,55,.32), inset 0 1px 0 rgba(255,255,200,.35);
+  text-shadow: 0 1px 2px rgba(0,0,0,.18);
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212,175,55,.42); }
+.btn-gold .shimmer { position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%); transform: translateX(-100%); animation: shimmer 3.6s ease-in-out infinite; pointer-events: none; }
+@keyframes shimmer { 0%,40% { transform: translateX(-100%); } 60%,100% { transform: translateX(100%); } }
+
+.btn-outline {
+  background: rgba(255,255,255,.55);
+  color: var(--txt);
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.btn-outline:hover { background: #fff; border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+
+.btn-inv {
+  background: rgba(255,255,255,.13); color: #fff;
+  border: 1px solid rgba(255,255,255,.28);
+  backdrop-filter: blur(10px);
+}
+.btn-inv:hover { background: rgba(255,255,255,.22); transform: translateY(-1px); }
+
+.btn-ghost {
+  background: transparent; color: var(--txt);
+  padding-left: 0; padding-right: 0;
+}
+.btn-ghost .arrow {
+  display: inline-block; transition: transform .35s var(--ease);
+}
+.btn-ghost:hover .arrow { transform: translateX(6px); }
+.btn-ghost::before {
+  content: ''; position: absolute; bottom: .55rem; left: 0;
+  height: 1px; width: 100%;
+  background: currentColor; opacity: .35;
+  transform-origin: right;
+  transform: scaleX(1);
+  transition: transform .5s var(--ease);
+}
+.btn-ghost:hover::before { transform-origin: left; transform: scaleX(1); }
+
+/* ────────────────────────────────────────────────────────────
+   HEADER + KINETIC NAV
+   ──────────────────────────────────────────────────────────── */
+.site-header {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(244,240,232,.78);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  transition: padding .3s var(--ease);
+}
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; gap: 1rem; }
+
+.brand { display: flex; align-items: center; gap: .7rem; }
+.brand-mark {
+  width: 2.4rem; height: 2.4rem; border-radius: .8rem;
+  background: var(--primary);
+  display: grid; place-items: center;
+  box-shadow:
+    0 0 0 1px rgba(212,175,55,.35),
+    0 0 18px rgba(212,175,55,.45),
+    inset 0 1px 0 rgba(255,255,255,.10);
+  position: relative;
+  animation: brand-aura 3.4s ease-in-out infinite alternate;
+}
+.brand-mark::before {
+  content: ''; position: absolute; inset: -6px;
+  border-radius: 1.1rem;
+  background: radial-gradient(circle, rgba(212,175,55,.40) 0%, rgba(212,175,55,0) 70%);
+  pointer-events: none;
+  z-index: -1;
+  animation: brand-pulse 3.4s ease-in-out infinite alternate;
+}
+.brand-mark > svg { position: relative; z-index: 1; }
+@keyframes brand-aura {
+  from { box-shadow: 0 0 0 1px rgba(212,175,55,.30), 0 0 14px rgba(212,175,55,.35), inset 0 1px 0 rgba(255,255,255,.10); }
+  to   { box-shadow: 0 0 0 1px rgba(212,175,55,.55), 0 0 26px rgba(212,175,55,.65), inset 0 1px 0 rgba(255,255,255,.14); }
+}
+@keyframes brand-pulse {
+  from { opacity: .55; transform: scale(.95); }
+  to   { opacity: 1;   transform: scale(1.08); }
+}
+.brand-name { font-size: 1.35rem; font-weight: 700; letter-spacing: -.04em; color: var(--txt); }
+.brand-name span { color: var(--gold); }
+
+/* Animated nav links — character flip on hover */
+.nav-links { display: flex; gap: 1.75rem; list-style: none; }
+.nav-links a {
+  font-size: .85rem; font-weight: 500; color: var(--txt-muted);
+  position: relative; padding: .25rem 0;
+  transition: color .25s;
+  display: inline-block;
+}
+.nav-links a .nav-text {
+  display: inline-flex; overflow: hidden; vertical-align: top;
+  position: relative;
+}
+.nav-links a .nav-text > span {
+  display: inline-block;
+  transition: transform .5s var(--ease);
+}
+.nav-links a .nav-text > span::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 100%;
+  display: inline-block;
+}
+.nav-links a:hover .nav-text > span {
+  transform: translateY(-100%);
+}
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; bottom: -2px;
+  width: 100%; height: 1.5px;
+  background: linear-gradient(90deg, var(--primary), var(--gold));
+  transform: scaleX(0); transform-origin: right;
+  transition: transform .45s var(--ease);
+}
+.nav-links a:hover { color: var(--primary); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+.nav-cta { display: flex; gap: .65rem; align-items: center; }
+.hamburger { display: none; flex-direction: column; gap: 5px; padding: .5rem; background: none; border: none; cursor: pointer; }
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--txt); border-radius: 2px; transition: transform .3s var(--ease), opacity .3s var(--ease); }
+.hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.is-open span:nth-child(2) { opacity: 0; }
+.hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drop-down menu */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: rgba(244,240,232,.98);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  padding: 5.5rem 1.5rem 2rem;
+  z-index: 190;
+  transform: translateY(-105%);
+  transition: transform .4s var(--ease);
+  box-shadow: 0 16px 40px rgba(0,40,38,.10);
+}
+.mobile-menu.is-open { transform: translateY(0); }
+.mobile-menu ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .25rem; }
+.mobile-menu a {
+  display: block; padding: .9rem 0;
+  font-family: var(--ff-mono); font-size: .82rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 500; color: var(--txt);
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+}
+.mobile-menu a:last-child { border-bottom: none; }
+.mobile-menu .mobile-cta {
+  display: flex; gap: .5rem; margin-top: 1.25rem;
+}
+.mobile-menu .mobile-cta .btn { flex: 1; justify-content: center; }
+
+/* ────────────────────────────────────────────────────────────
+   ANNOUNCEMENT TICKER
+   ──────────────────────────────────────────────────────────── */
+.ticker {
+  background: var(--primary);
+  color: rgba(255,255,255,.85);
+  font-family: var(--ff-mono);
+  font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+  padding: .55rem 0;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.ticker-track {
+  display: flex; gap: 3rem; width: max-content;
+  animation: ticker-scroll 38s linear infinite;
+}
+.ticker-track > span { display: inline-flex; align-items: center; gap: .9rem; white-space: nowrap; }
+.ticker-track > span::before {
+  content: '◆'; color: var(--gold); font-size: .65rem;
+}
+@keyframes ticker-scroll {
+  to { transform: translateX(-50%); }
+}
+.ticker:hover .ticker-track { animation-play-state: paused; }
+
+/* ────────────────────────────────────────────────────────────
+   HERO
+   ──────────────────────────────────────────────────────────── */
+.hero {
+  padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(3rem, 5vw, 5rem);
+  position: relative; overflow: hidden;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 4rem; align-items: center;
+  position: relative; z-index: 1;
+}
+.hero-eyebrow-row { display: flex; gap: .65rem; flex-wrap: wrap; margin-bottom: 1.75rem; }
+
+/* Kinetic display headline */
+.hero-h1 {
+  font-size: clamp(3rem, 5.4vw, 5.6rem);
+  font-weight: 700; letter-spacing: -.05em; line-height: .96;
+  color: var(--txt); margin-bottom: 1.4rem;
+  position: relative;
+}
+.hero-h1 .line { display: block; overflow: hidden; }
+.hero-h1 .word {
+  display: inline-block; transform: translateY(110%);
+  animation: word-rise .9s var(--ease) forwards;
+}
+.hero-h1 .word.t { color: var(--primary); }
+.hero-h1 .word.c {
+  font-family: var(--ff-serif); font-style: italic;
+  color: var(--clay); font-weight: 400;
+  letter-spacing: -.03em;
+}
+.hero-h1 .line:nth-child(1) .word { animation-delay: .05s; }
+.hero-h1 .line:nth-child(2) .word { animation-delay: .15s; }
+.hero-h1 .line:nth-child(3) .word { animation-delay: .25s; }
+@keyframes word-rise { to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .hero-h1 .word { transform: none !important; } }
+
+.hero-tagline {
+  font-size: 1.05rem; font-weight: 400;
+  max-width: 52ch; margin-bottom: 2rem; line-height: 1.65;
+  color: var(--txt-muted);
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.25rem; align-items: center; }
+
+.trust-pills { display: flex; gap: .55rem; flex-wrap: wrap; }
+.trust-pill {
+  display: flex; align-items: center; gap: .4rem;
+  font-size: .76rem; font-weight: 500; color: var(--txt-muted);
+  padding: .42rem .85rem; border-radius: var(--r-full);
+  background: var(--surface); border: 1px solid var(--border);
+}
+.trust-pill svg { color: var(--primary); flex-shrink: 0; }
+
+/* Hero right — orbital portrait */
+.hero-right { position: relative; min-height: 580px; }
+
+.hero-portrait {
+  position: absolute;
+  inset: 0 0 4rem 3rem;
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border);
+}
+.hero-portrait img { width: 100%; height: 100%; object-fit: cover; }
+.hero-portrait::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0,40,38,.4) 100%);
+  pointer-events: none;
+}
+
+.hero-img-side {
+  position: absolute;
+  width: 46%; top: 1.5rem; right: -1rem;
+  border-radius: 1.75rem; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid var(--bg);
+  aspect-ratio: 1;
+  z-index: 2;
+}
+.hero-img-side img { width: 100%; height: 100%; object-fit: cover; }
+.hero-img-side::before {
+  content: ''; position: absolute; inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.3);
+  pointer-events: none;
+}
+
+/* Floating ingredient orbits around portrait */
+.ingredient {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 14px rgba(0,40,38,.18));
+  z-index: 3;
+}
+.ing-1 { top: -1rem; right: 6rem; animation: float-a 4.2s ease-in-out infinite alternate; }
+.ing-2 { top: 38%; left: -1rem; animation: float-b 3.4s ease-in-out infinite alternate; }
+.ing-3 { bottom: 7rem; right: -1.5rem; animation: float-c 5s ease-in-out infinite alternate; }
+.ing-4 { bottom: 1rem; left: 8rem; animation: float-d 3.8s ease-in-out infinite alternate; }
+@keyframes float-a { from { transform: translateY(0) rotate(-6deg); } to { transform: translateY(-14px) rotate(8deg); } }
+@keyframes float-b { from { transform: translateY(0) rotate(4deg); } to { transform: translateY(12px) rotate(-8deg); } }
+@keyframes float-c { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-10px) rotate(10deg); } }
+@keyframes float-d { from { transform: translateY(0) rotate(6deg); } to { transform: translateY(-8px) rotate(-5deg); } }
+
+.hero-stat-card {
+  position: absolute;
+  bottom: 0; left: -1rem;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-radius: var(--r-xl);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,.8);
+  border: 1px solid rgba(255,255,255,.6);
+  min-width: 240px; z-index: 4;
+  display: flex; align-items: center; gap: 1rem;
+}
+.hero-stat-card .ring {
+  width: 56px; height: 56px; flex-shrink: 0;
+  position: relative;
+}
+.hero-stat-card .ring svg { transform: rotate(-90deg); }
+.hero-stat-card .ring circle { fill: none; stroke-width: 6; }
+.hero-stat-card .ring .bg-c { stroke: var(--primary-light); }
+.hero-stat-card .ring .fg-c {
+  stroke: var(--primary);
+  stroke-linecap: round;
+  stroke-dasharray: 138;
+  stroke-dashoffset: 138;
+  animation: ring-fill 2.4s var(--ease) .6s forwards;
+}
+@keyframes ring-fill { to { stroke-dashoffset: 28; } }
+.hero-stat-card .num-wrap { line-height: 1; }
+.hero-stat-card .big-num {
+  font-size: 2.2rem; font-weight: 700; color: var(--primary);
+  letter-spacing: -.05em; line-height: 1;
+}
+.hero-stat-card p { font-size: .76rem; margin-top: .35rem; max-width: 18ch; line-height: 1.35; }
+
+.hero-gold-pill {
+  position: absolute;
+  top: 1rem; right: -1rem; z-index: 4;
+  background: linear-gradient(135deg, #E6C865 0%, #b99720 100%);
+  color: #fff; border-radius: var(--r-full);
+  padding: .5rem 1.05rem;
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; font-family: var(--ff-mono);
+  box-shadow: 0 4px 18px rgba(212,175,55,.4), inset 0 1px 0 rgba(255,255,200,.35);
+  border: 1px solid rgba(255,220,80,.4);
+  display: flex; align-items: center; gap: .4rem;
+}
+.hero-gold-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: blink 1.6s ease-in-out infinite; }
+
+/* Ambient steam vapor behind hero */
+.steam {
+  position: absolute;
+  bottom: 0; left: 50%;
+  width: 200px; height: 300px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: .35;
+}
+.steam path {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: 0;
+  animation: steam-rise 4s ease-out infinite;
+}
+.steam path:nth-child(1) { animation-delay: 0s; }
+.steam path:nth-child(2) { animation-delay: 1.3s; }
+.steam path:nth-child(3) { animation-delay: 2.6s; }
+@keyframes steam-rise {
+  0% { opacity: 0; transform: translateY(40px) scaleY(.6); }
+  30% { opacity: .8; }
+  100% { opacity: 0; transform: translateY(-60px) scaleY(1.2); }
+}
+
+/* ────────────────────────────────────────────────────────────
+   FOOD MARQUEE
+   ──────────────────────────────────────────────────────────── */
+.marquee-band {
+  background: var(--surface-warm);
+  border-block: 1px solid var(--border);
+  padding: 1.4rem 0;
+  overflow: hidden;
+  position: relative;
+}
+.marquee-band::before, .marquee-band::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 120px;
+  z-index: 2; pointer-events: none;
+}
+.marquee-band::before { left: 0; background: linear-gradient(90deg, var(--surface-warm), transparent); }
+.marquee-band::after  { right: 0; background: linear-gradient(-90deg, var(--surface-warm), transparent); }
+.marquee-track {
+  display: flex; gap: 3rem; width: max-content;
+  animation: marquee 32s linear infinite;
+  align-items: center;
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee-band:hover .marquee-track { animation-play-state: paused; }
+
+.marquee-item {
+  display: flex; align-items: center; gap: .85rem;
+  font-family: var(--ff-serif); font-style: italic;
+  font-size: 1.6rem; color: var(--txt);
+  white-space: nowrap;
+}
+.marquee-item .glyph { color: var(--clay); font-style: normal; font-family: var(--ff); font-weight: 400; }
+.marquee-item .meta {
+  font-family: var(--ff-mono); font-style: normal;
+  font-size: .68rem; color: var(--txt-faint);
+  letter-spacing: .12em; text-transform: uppercase;
+  border-left: 1px solid var(--border-strong); padding-left: .85rem;
+}
+
+/* ────────────────────────────────────────────────────────────
+   STATS BAR
+   ──────────────────────────────────────────────────────────── */
+.stats-bar {
+  padding: 2.5rem 0;
+  background: var(--primary);
+  color: #fff;
+  position: relative; overflow: hidden;
+}
+.stats-bar::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 50%, rgba(212,175,55,.12), transparent 50%);
+  pointer-events: none;
+}
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; text-align: center; position: relative; }
+.stat-item { padding: 0 1rem; }
+.stat-item + .stat-item { border-left: 1px solid rgba(255,255,255,.10); }
+.stat-item .num {
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  font-weight: 700; letter-spacing: -.045em;
+  color: #fff; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-item .num span { color: var(--gold); }
+.stat-item p { font-size: .8rem; color: rgba(255,255,255,.65); max-width: 26ch; margin: .45rem auto 0; }
+
+/* ────────────────────────────────────────────────────────────
+   MISSION STRIP
+   ──────────────────────────────────────────────────────────── */
+.mission-strip { background: var(--surface-warm); border-bottom: 1px solid var(--border); }
+.mission-inner {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 0; background: var(--border);
+}
+.mission-block {
+  padding: 2.75rem 2.25rem;
+  background: var(--surface-warm);
+  position: relative;
+  overflow: hidden;
+}
+.mission-block::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 100% 0%, var(--primary-light), transparent 60%);
+  opacity: 0; transition: opacity .5s var(--ease);
+  pointer-events: none;
+}
+.mission-block:hover::after { opacity: 1; }
+.mission-block .icon-wrap {
+  width: 3rem; height: 3rem; border-radius: 1rem;
+  display: grid; place-items: center;
+  margin-bottom: 1.25rem;
+  transition: transform .5s var(--ease);
+}
+.mission-block:hover .icon-wrap { transform: scale(1.08) rotate(-4deg); }
+.mission-block .icon-wrap.teal { background: var(--primary-light); color: var(--primary); }
+.mission-block .icon-wrap.clay { background: var(--clay-light); color: var(--clay); }
+.mission-block .icon-wrap.gold { background: var(--gold-light); color: var(--gold-hover); }
+.mission-block h4 {
+  font-size: 1.1rem; font-weight: 700; letter-spacing: -.025em;
+  color: var(--txt); margin-bottom: .65rem;
+}
+.mission-block p { font-size: .88rem; max-width: none; }
+.goal-tag {
+  display: inline-block; font-size: .66rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: .3rem .7rem; border-radius: var(--r-full);
+  margin-bottom: .85rem; font-family: var(--ff-mono);
+}
+.goal-tag.teal { background: var(--primary-light); color: var(--primary); }
+.goal-tag.clay { background: var(--clay-light); color: var(--clay); }
+.goal-tag.gold { background: var(--gold-light); color: var(--gold-hover); }
+
+/* ────────────────────────────────────────────────────────────
+   SECTIONS
+   ──────────────────────────────────────────────────────────── */
+.section { padding: clamp(3.5rem, 7vw, 6rem) 0; }
+.section-header { margin-bottom: 3rem; }
+.section-header.two-col { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: end; }
+
+/* ────────────────────────────────────────────────────────────
+   SERVICES — animated radial accent
+   ──────────────────────────────────────────────────────────── */
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+.service-card {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  padding: 2rem;
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 1.5rem;
+  position: relative; overflow: hidden;
+  transition: box-shadow .35s var(--ease), transform .35s var(--ease), border-color .3s;
+  isolation: isolate;
+}
+.service-card::before {
+  content: ''; position: absolute;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  top: var(--my, 50%); left: var(--mx, 50%);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--primary-light), transparent 70%);
+  opacity: 0; transition: opacity .4s var(--ease);
+  z-index: -1; pointer-events: none;
+}
+.service-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
+  border-color: var(--primary-mid);
+}
+.service-card:hover::before { opacity: 1; }
+.service-card.feat { background: var(--primary); border-color: var(--primary-h); color: #fff; }
+.service-card.feat::before { background: radial-gradient(circle, rgba(212,175,55,.16), transparent 70%); }
+.service-card.feat p { color: rgba(255,255,255,.72); }
+.service-card.feat h3 { color: #fff; }
+.service-card.feat .service-tag { color: rgba(255,255,255,.72); }
+.service-card.feat .sl li { color: rgba(255,255,255,.74); }
+.service-card.feat .sl li::before { background: var(--gold); }
+
+.service-icon {
+  width: 3.25rem; height: 3.25rem; border-radius: 1rem;
+  background: var(--primary-light); color: var(--primary);
+  display: grid; place-items: center;
+  transition: transform .5s var(--ease), background .3s;
+}
+.service-card:hover .service-icon {
+  transform: rotate(-8deg) scale(1.1);
+}
+.service-card.feat .service-icon { background: rgba(255,255,255,.12); color: #fff; }
+.service-tag {
+  font-size: .68rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--primary);
+  margin-bottom: .35rem; font-family: var(--ff-mono);
+}
+.service-card h3 {
+  font-size: 1.35rem; font-weight: 700;
+  letter-spacing: -.03em; color: var(--txt); line-height: 1.15;
+}
+.service-card h3 .accent { font-family: var(--ff-serif); font-style: italic; font-weight: 400; color: var(--primary); }
+.service-card.feat h3 .accent { color: var(--gold); }
+.service-card p { font-size: .88rem; max-width: none; }
+
+.sl { list-style: none; display: grid; gap: .5rem; }
+.sl li {
+  font-size: .82rem; color: var(--txt-muted);
+  display: flex; align-items: center; gap: .55rem;
+  position: relative;
+  padding-left: .15rem;
+}
+.sl li::before {
+  content: ''; width: 5px; height: 5px;
+  border-radius: 50%; background: var(--primary); flex-shrink: 0;
+  transition: width .3s var(--ease);
+}
+.service-card:hover .sl li::before { width: 16px; border-radius: 3px; }
+
+.btn-glass {
+  background: rgba(0,75,73,.06); color: var(--txt);
+  border: 1px solid rgba(0,75,73,.14);
+  padding: .8rem 1.25rem; font-size: .85rem;
+}
+.btn-glass:hover { background: rgba(0,75,73,.12); color: var(--primary); transform: translateY(-1px); }
+
+.btn-glass-inv {
+  background: rgba(255,255,255,.10); color: #fff;
+  border: 1px solid rgba(255,255,255,.22);
+  padding: .8rem 1.25rem; font-size: .85rem;
+}
+.btn-glass-inv:hover { background: rgba(255,255,255,.18); transform: translateY(-1px); }
+
+/* ────────────────────────────────────────────────────────────
+   PROCESS — animated SVG line
+   ──────────────────────────────────────────────────────────── */
+.process-bg { background: var(--surface-warm); }
+
+.process-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--border); border-radius: var(--r-xl);
+  overflow: hidden;
+  background: var(--surface);
+  position: relative;
+}
+.process-step {
+  padding: 2.25rem 1.75rem;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  transition: background .35s var(--ease);
+  position: relative; overflow: hidden;
+}
+.process-step:last-child { border-right: none; }
+.process-step::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent, var(--primary-light));
+  opacity: 0; transition: opacity .4s var(--ease);
+  pointer-events: none;
+}
+.process-step:hover::before { opacity: 1; }
+.step-num {
+  font-family: var(--ff-serif); font-style: italic;
+  font-size: 3.4rem; font-weight: 400;
+  letter-spacing: -.04em; color: var(--primary);
+  opacity: .25; line-height: 1; margin-bottom: .65rem;
+  transition: opacity .4s var(--ease), transform .5s var(--ease);
+}
+.process-step:hover .step-num { opacity: .8; transform: translateX(4px); }
+.process-step h4 {
+  font-size: 1.05rem; font-weight: 700;
+  letter-spacing: -.02em; color: var(--txt);
+  margin-bottom: .5rem;
+  display: flex; align-items: center; gap: .5rem;
+}
+.process-step h4 .arrow {
+  display: inline-block; opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .35s var(--ease), transform .35s var(--ease);
+  color: var(--primary);
+}
+.process-step:hover h4 .arrow { opacity: 1; transform: translateX(0); }
+.process-step p { font-size: .82rem; max-width: none; }
+
+/* ────────────────────────────────────────────────────────────
+   FOOD PHILOSOPHY
+   ──────────────────────────────────────────────────────────── */
+.meal-section {
+  background: var(--primary);
+  color: #fff;
+  padding: clamp(3.5rem, 7vw, 6rem) 0;
+  overflow: hidden;
+  position: relative;
+}
+.meal-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 20%, rgba(212,175,55,.10), transparent 60%);
+  pointer-events: none;
+}
+.meal-inner {
+  display: grid; grid-template-columns: 1fr 1.1fr;
+  gap: 4rem; align-items: center;
+  position: relative;
+}
+.meal-section h2 {
+  font-size: clamp(2.1rem, 3.4vw, 3.2rem);
+  font-weight: 700; letter-spacing: -.045em;
+  color: #fff; line-height: 1.04; margin-bottom: 1.25rem;
+}
+.meal-section h2 em {
+  font-family: var(--ff-serif); font-style: italic;
+  color: var(--gold); font-weight: 400; letter-spacing: -.02em;
+}
+.meal-section p { color: rgba(255,255,255,.72); margin-bottom: 1.75rem; max-width: 52ch; }
+
+.meal-tags { display: flex; flex-wrap: wrap; gap: .55rem; margin-bottom: 2rem; }
+.meal-tag {
+  padding: .45rem .9rem; border-radius: var(--r-full);
+  background: rgba(255,255,255,.08);
+  font-size: .78rem; font-weight: 500;
+  color: rgba(255,255,255,.88);
+  border: 1px solid rgba(255,255,255,.14);
+  transition: background .3s, transform .3s var(--ease), border-color .3s;
+}
+.meal-tag:hover { background: var(--gold); color: var(--primary-deep); border-color: var(--gold); transform: translateY(-2px); }
+
+.meal-photos {
+  display: grid; grid-template-columns: 1.3fr .7fr; gap: 1rem;
+}
+.meal-photo {
+  border-radius: 1.75rem; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.12);
+  position: relative;
+}
+.meal-photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 1.2s var(--ease);
+}
+.meal-photo:hover img { transform: scale(1.06); }
+.meal-photo.tall { grid-row: span 2; }
+.meal-stack { display: grid; gap: 1rem; }
+
+/* ────────────────────────────────────────────────────────────
+   TESTIMONIALS
+   ──────────────────────────────────────────────────────────── */
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.testi-card {
+  background: var(--surface); border-radius: var(--r-xl);
+  padding: 1.85rem; border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 1rem;
+  transition: box-shadow .35s var(--ease), transform .35s var(--ease), border-color .3s;
+  position: relative; overflow: hidden;
+}
+.testi-card::before {
+  content: '"';
+  position: absolute; top: -1rem; right: 1rem;
+  font-family: var(--ff-serif); font-style: italic;
+  font-size: 7rem; color: var(--primary);
+  opacity: .08; line-height: 1;
+  transition: opacity .35s var(--ease), transform .5s var(--ease);
+}
+.testi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--primary-mid); }
+.testi-card:hover::before { opacity: .18; transform: translateY(4px); }
+.testi-stars { color: var(--gold); font-size: 1rem; letter-spacing: .12em; }
+.testi-card blockquote {
+  font-size: 1.02rem; font-weight: 400; color: var(--txt);
+  font-family: var(--ff-serif); font-style: italic;
+  line-height: 1.45; letter-spacing: -.01em;
+  position: relative; z-index: 1;
+}
+.testi-footer {
+  display: flex; align-items: center; gap: .75rem;
+  padding-top: .9rem; border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.testi-avatar {
+  width: 2.4rem; height: 2.4rem; border-radius: 50%;
+  background: var(--primary-light); color: var(--primary);
+  display: grid; place-items: center;
+  font-size: 1rem; font-weight: 700; flex-shrink: 0;
+}
+.testi-footer strong { display: block; font-size: .9rem; color: var(--txt); font-weight: 600; }
+.testi-footer span { font-size: .76rem; color: var(--txt-muted); }
+.testi-result {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-family: var(--ff-mono); font-size: .68rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--clay); margin-top: .25rem;
+}
+.testi-result::before { content: '↗'; font-family: var(--ff); }
+
+/* ────────────────────────────────────────────────────────────
+   VISION / GOALS
+   ──────────────────────────────────────────────────────────── */
+.vm-section { padding: clamp(3.5rem, 7vw, 6rem) 0; }
+.vm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+
+.vm-main {
+  padding: 2.75rem; background: var(--primary);
+  border-radius: var(--r-2xl); color: #fff;
+  position: relative; overflow: hidden;
+}
+.vm-main::before {
+  content: ''; position: absolute;
+  top: -50%; right: -30%;
+  width: 80%; height: 200%;
+  background: radial-gradient(circle, rgba(212,175,55,.10), transparent 60%);
+  pointer-events: none;
+}
+.vm-main h3 {
+  font-size: clamp(1.7rem, 2.5vw, 2.2rem);
+  font-weight: 700; letter-spacing: -.035em;
+  color: #fff; line-height: 1.1; margin-bottom: 1rem;
+  position: relative;
+}
+.vm-main h3 em {
+  font-family: var(--ff-serif); font-style: italic;
+  color: var(--gold); font-weight: 400;
+}
+.vm-main p { color: rgba(255,255,255,.72); font-size: .93rem; max-width: none; line-height: 1.7; position: relative; }
+.vm-div { height: 1px; background: rgba(255,255,255,.12); margin: 1.5rem 0; }
+
+.vm-aside { display: grid; gap: 1.25rem; }
+.vm-card {
+  padding: 1.85rem; background: var(--surface);
+  border-radius: var(--r-xl); border: 1px solid var(--border);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s;
+}
+.vm-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary-mid); }
+.vm-card h4 {
+  font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em;
+  color: var(--txt); margin-bottom: .55rem;
+  display: flex; align-items: center; gap: .65rem;
+}
+.vm-card h4 .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.vm-card p { font-size: .88rem; max-width: none; }
+
+/* ────────────────────────────────────────────────────────────
+   ABOUT
+   ──────────────────────────────────────────────────────────── */
+.about-section { background: var(--bg-2); padding: clamp(3.5rem, 7vw, 6rem) 0; }
+.about-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 4.5rem; align-items: start; }
+
+.about-img-col { position: relative; }
+.about-brand-card {
+  border-radius: 2.25rem; overflow: hidden;
+  aspect-ratio: 3/4;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--primary) 0%, var(--primary-h) 55%, var(--primary-deep) 100%);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1.4rem; padding: 2.5rem 2rem;
+  position: relative;
+}
+.about-brand-card::before {
+  content: ''; position: absolute;
+  top: -40%; right: -30%;
+  width: 80%; height: 80%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,175,55,.18) 0%, transparent 70%);
+  pointer-events: none;
+  animation: orb-drift 14s ease-in-out infinite alternate;
+}
+.about-brand-card::after {
+  content: ''; position: absolute;
+  bottom: -30%; left: -20%;
+  width: 70%; height: 70%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(162,91,68,.16) 0%, transparent 70%);
+  pointer-events: none;
+  animation: orb-drift 18s ease-in-out infinite alternate-reverse;
+}
+@keyframes orb-drift {
+  to { transform: translate(20px, 30px) scale(1.1); }
+}
+.abc-icon {
+  width: 5.5rem; height: 5.5rem; border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  border: 1.5px solid rgba(255,255,255,.18);
+  display: grid; place-items: center;
+  position: relative; z-index: 1;
+}
+.about-brand-card h3 {
+  font-family: var(--ff); font-size: 1.85rem; font-weight: 700;
+  letter-spacing: -.04em; color: #fff; text-align: center;
+  line-height: 1.1; position: relative; z-index: 1;
+}
+.about-brand-card h3 span { color: var(--gold); }
+.about-brand-card .tag {
+  font-family: var(--ff-mono); font-size: .68rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  position: relative; z-index: 1;
+  text-align: center;
+}
+.abc-pills {
+  display: flex; flex-direction: column; gap: .55rem;
+  width: 100%; position: relative; z-index: 1;
+}
+.abc-pill {
+  display: flex; align-items: center; gap: .65rem;
+  padding: .7rem 1rem; border-radius: var(--r-full);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  font-size: .8rem; color: rgba(255,255,255,.85);
+  font-weight: 500;
+  transition: background .3s, border-color .3s;
+}
+.abc-pill:hover { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.20); }
+.abc-pill .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+.about-cred-card {
+  position: absolute; bottom: -1.5rem; right: -1.5rem;
+  background: var(--clay); color: #fff;
+  border-radius: var(--r-xl);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,.12);
+  max-width: 240px;
+}
+.about-cred-card strong { display: block; font-size: 1rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; margin-bottom: .4rem; }
+.about-cred-card p { color: rgba(255,255,255,.72); font-size: .76rem; max-width: none; }
+
+.about-content { padding-top: .5rem; }
+.cred-stack { display: grid; gap: .75rem; margin: 1.75rem 0; }
+.cred-row {
+  display: flex; gap: .9rem; align-items: flex-start;
+  padding: 1rem 1.15rem; background: var(--surface);
+  border-radius: var(--r-md); border: 1px solid var(--border);
+  transition: transform .35s var(--ease), border-color .3s;
+}
+.cred-row:hover { transform: translateX(4px); border-color: var(--primary-mid); }
+.cred-marker {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--primary); flex-shrink: 0; margin-top: .42rem;
+}
+.cred-row strong { display: block; font-size: .88rem; font-weight: 600; color: var(--txt); margin-bottom: .15rem; }
+.cred-row span { font-size: .8rem; color: var(--txt-muted); }
+.skills-row { display: flex; gap: .55rem; flex-wrap: wrap; margin: 1rem 0 1.75rem; }
+.skill-pill {
+  font-size: .76rem; font-weight: 500;
+  padding: .4rem .85rem; border-radius: var(--r-full);
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--txt-muted);
+  transition: border-color .3s, color .3s;
+}
+.skill-pill:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ────────────────────────────────────────────────────────────
+   CTA
+   ──────────────────────────────────────────────────────────── */
+.cta-section {
+  background: linear-gradient(120deg, var(--primary) 0%, #006058 100%);
+  padding: clamp(3.5rem, 7vw, 6rem) 0;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: ''; position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(212,175,55,.14), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(162,91,68,.16), transparent 40%);
+  pointer-events: none;
+}
+.cta-inner { display: grid; grid-template-columns: 1.1fr auto; gap: 3rem; align-items: center; position: relative; }
+.cta-section h2 {
+  font-size: clamp(1.95rem, 3.2vw, 2.9rem);
+  font-weight: 700; letter-spacing: -.045em;
+  color: #fff; margin-bottom: .85rem; line-height: 1.06;
+}
+.cta-section h2 em { font-family: var(--ff-serif); font-style: italic; color: var(--gold); font-weight: 400; }
+.cta-section p { color: rgba(255,255,255,.72); max-width: 56ch; }
+.cta-btns { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+/* ────────────────────────────────────────────────────────────
+   CONTACT FORM
+   ──────────────────────────────────────────────────────────── */
+/* Lead Nutritionist portrait */
+.lead-nut {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.75rem;
+  align-items: start;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.lead-nut-photo {
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: var(--primary-light, rgba(0,75,73,.06));
+  position: relative;
+  box-shadow: 0 12px 32px rgba(0,75,73,.14), 0 0 0 1px rgba(0,75,73,.06);
+}
+.lead-nut-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.lead-nut-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 65%, rgba(0,40,38,.18) 100%);
+  pointer-events: none;
+}
+@media (max-width: 720px) {
+  .lead-nut { grid-template-columns: 1fr; }
+  .lead-nut-photo { max-width: 240px; }
+}
+
+.contact-section {
+  background: var(--bone, #F4F0E8);
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  position: relative;
+  border-top: 1px solid rgba(0,75,73,.08);
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+.contact-intro .eyebrow { margin-bottom: 1rem; }
+.contact-intro h2 {
+  font-family: var(--ff);
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -.045em;
+  line-height: 1.04;
+  color: var(--txt);
+  margin-bottom: 1rem;
+}
+.contact-intro h2 em {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-hover);
+}
+.contact-intro p {
+  color: rgba(26,26,26,.66);
+  max-width: 38ch;
+  margin-bottom: 1.5rem;
+}
+.contact-deets { display: grid; gap: .9rem; margin-top: 2rem; }
+.contact-deet {
+  display: flex; align-items: flex-start; gap: .8rem;
+  padding-top: .9rem; border-top: 1px solid rgba(0,75,73,.10);
+}
+.contact-deet-icon {
+  width: 36px; height: 36px; flex: 0 0 36px;
+  border-radius: 10px;
+  background: var(--gold-light, rgba(212,175,55,.12));
+  color: var(--gold-hover);
+  display: grid; place-items: center;
+}
+.contact-deet-label {
+  font-family: var(--ff-mono);
+  font-size: .65rem; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(26,26,26,.5); margin-bottom: .2rem;
+}
+.contact-deet-val { font-size: .95rem; color: var(--txt); font-weight: 500; }
+
+.contact-form-card {
+  background: #fff;
+  border-radius: var(--r-xl, 20px);
+  padding: clamp(1.5rem, 3vw, 2.4rem);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.6) inset,
+    0 4px 20px rgba(0,75,73,.06),
+    0 24px 60px rgba(0,75,73,.08);
+  border: 1px solid rgba(0,75,73,.08);
+  position: relative;
+}
+.contact-form-card::before {
+  content: ''; position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(120% 80% at 0% 0%, rgba(212,175,55,.10), transparent 50%);
+}
+.contact-form { display: grid; gap: 1.1rem; position: relative; }
+.contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 540px) { .contact-row { grid-template-columns: 1fr; } }
+.contact-field { display: grid; gap: .4rem; }
+.contact-field label {
+  font-family: var(--ff-mono);
+  font-size: .65rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(26,26,26,.55);
+  font-weight: 500;
+}
+.contact-field input,
+.contact-field textarea {
+  appearance: none;
+  background: var(--bone, #F4F0E8);
+  border: 1px solid rgba(0,75,73,.12);
+  border-radius: 12px;
+  padding: .85rem 1rem;
+  font: inherit;
+  font-size: .95rem;
+  color: var(--txt);
+  font-family: var(--ff);
+  transition: border-color .2s, background .2s, box-shadow .2s;
+  width: 100%;
+}
+.contact-field textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.55;
+}
+.contact-field input::placeholder,
+.contact-field textarea::placeholder { color: rgba(26,26,26,.36); }
+.contact-field input:focus,
+.contact-field textarea:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(0,75,73,.08);
+}
+.contact-field.error input,
+.contact-field.error textarea { border-color: var(--clay); background: rgba(162,91,68,.04); }
+.contact-field-msg { font-size: .72rem; color: var(--clay); min-height: 1em; }
+
+.contact-submit {
+  margin-top: .4rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: .55rem;
+  padding: 1rem 1.5rem;
+  background: var(--primary);
+  color: #fff;
+  border: 0; border-radius: 14px;
+  font: inherit; font-weight: 600; font-size: .95rem; letter-spacing: -.005em;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: transform .2s var(--ease), background .2s, box-shadow .2s;
+  box-shadow: 0 8px 22px rgba(0,75,73,.22);
+  width: 100%;
+}
+.contact-submit:hover { background: var(--primary-h, #003432); transform: translateY(-1px); box-shadow: 0 12px 28px rgba(0,75,73,.28); }
+.contact-submit:active { transform: translateY(0); }
+.contact-submit .arrow { transition: transform .2s var(--ease); }
+.contact-submit:hover .arrow { transform: translateX(4px); }
+.contact-submit[data-variant="gold"] {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-hover) 100%);
+  color: #1a1a1a;
+  box-shadow: 0 8px 22px rgba(212,175,55,.32);
+}
+.contact-submit[data-variant="gold"]:hover { box-shadow: 0 12px 28px rgba(212,175,55,.42); }
+.contact-submit[data-variant="outline"] {
+  background: transparent; color: var(--primary);
+  border: 1.5px solid var(--primary);
+  box-shadow: none;
+}
+.contact-submit[data-variant="outline"]:hover { background: var(--primary); color: #fff; }
+
+.contact-success {
+  display: none;
+  padding: 1rem 1.1rem;
+  background: rgba(0,75,73,.06);
+  border: 1px solid rgba(0,75,73,.18);
+  border-radius: 12px;
+  color: var(--primary);
+  font-size: .9rem;
+  align-items: center; gap: .6rem;
+}
+.contact-form.is-sent .contact-success { display: flex; }
+.contact-form.is-sent .contact-row,
+.contact-form.is-sent .contact-field:not(.contact-field-success),
+.contact-form.is-sent .contact-submit { display: none; }
+
+.contact-consent {
+  display: flex; align-items: flex-start; gap: .55rem;
+  font-size: .78rem; color: rgba(26,26,26,.55);
+}
+.contact-consent input { margin-top: 3px; accent-color: var(--primary); }
+
+/* ── Tweaks panel (vanilla) ── */
+#nz-tweaks-toggle { display: none; } /* host controls visibility via postMessage protocol */
+.nz-tweaks {
+  position: fixed; right: 16px; bottom: 16px; z-index: 2147483646;
+  width: 296px;
+  background: rgba(250,249,247,.82);
+  -webkit-backdrop-filter: blur(24px) saturate(160%); backdrop-filter: blur(24px) saturate(160%);
+  border: .5px solid rgba(255,255,255,.6); border-radius: 14px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 12px 40px rgba(0,0,0,.18);
+  font: 11.5px/1.4 ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: #29261b;
+  display: none; flex-direction: column;
+  max-height: calc(100vh - 32px);
+  overflow: hidden;
+}
+.nz-tweaks.is-open { display: flex; }
+.nz-tweaks-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 8px 10px 14px; cursor: move; user-select: none;
+}
+.nz-tweaks-hd b { font-size: 12px; font-weight: 600; }
+.nz-tweaks-x {
+  appearance: none; border: 0; background: transparent;
+  width: 22px; height: 22px; border-radius: 6px; cursor: pointer;
+  color: rgba(41,38,27,.55); font-size: 14px;
+}
+.nz-tweaks-x:hover { background: rgba(0,0,0,.06); color: #29261b; }
+.nz-tweaks-body { padding: 2px 14px 14px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+.nz-tweak-section {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9.5px; letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(41,38,27,.45); padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+.nz-tweak-section:first-child { border-top: 0; padding-top: 0; }
+.nz-tweak-row { display: grid; gap: 5px; }
+.nz-tweak-row label {
+  font-size: 11px; color: rgba(41,38,27,.78); display: flex; justify-content: space-between;
+}
+.nz-tweak-row label .v { color: rgba(41,38,27,.5); font-family: ui-monospace, monospace; font-size: 10.5px; }
+.nz-tweak-row input[type="text"],
+.nz-tweak-row input[type="color"] {
+  appearance: none; border: 1px solid rgba(0,0,0,.12); background: rgba(255,255,255,.6);
+  border-radius: 8px; padding: 6px 8px; font: inherit; color: inherit; width: 100%;
+}
+.nz-tweak-row input[type="color"] { padding: 2px; height: 28px; cursor: pointer; }
+.nz-tweak-row input[type="range"] { width: 100%; accent-color: #004B49; }
+.nz-tweak-segs { display: flex; gap: 2px; padding: 2px; background: rgba(0,0,0,.05); border-radius: 8px; }
+.nz-tweak-segs button {
+  flex: 1; appearance: none; border: 0; background: transparent; color: inherit;
+  padding: 5px 8px; border-radius: 6px; cursor: pointer; font: inherit; font-size: 11px;
+}
+.nz-tweak-segs button.is-on { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.12); font-weight: 600; }
+.nz-tweak-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px;
+}
+.nz-tweak-toggle button {
+  appearance: none; border: 0; cursor: pointer;
+  width: 32px; height: 18px; border-radius: 999px; background: rgba(0,0,0,.18);
+  position: relative; transition: background .15s;
+}
+.nz-tweak-toggle button::after {
+  content: ''; position: absolute; left: 2px; top: 2px;
+  width: 14px; height: 14px; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  transition: transform .15s;
+}
+.nz-tweak-toggle button.is-on { background: #004B49; }
+.nz-tweak-toggle button.is-on::after { transform: translateX(14px); }
+
+/* ────────────────────────────────────────────────────────────
+   PRICING
+   ──────────────────────────────────────────────────────────── */
+.pricing-section {
+  background: var(--bg-2);
+  padding: clamp(3.5rem, 7vw, 6rem) 0;
+  border-top: 1px solid var(--border);
+}
+.pricing-eyebrow-row { display: flex; justify-content: center; margin-bottom: 1rem; }
+.pricing-header { text-align: center; margin-bottom: 3rem; }
+.pricing-header p { margin: 1rem auto 0; max-width: 52ch; text-align: center; }
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+@media (max-width: 640px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+.pricing-card {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  padding: 2.25rem 2rem;
+  display: flex; flex-direction: column; gap: 1.5rem;
+  position: relative; overflow: hidden;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .3s;
+  isolation: isolate;
+}
+.pricing-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 100% 0%, var(--primary-light), transparent 60%);
+  opacity: 0; transition: opacity .4s var(--ease);
+  pointer-events: none; z-index: -1;
+}
+.pricing-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--primary-mid); }
+.pricing-card:hover::before { opacity: 1; }
+
+.pricing-card.signature {
+  background: var(--primary);
+  border-color: var(--primary-h);
+  color: #fff;
+}
+.pricing-card.signature::before {
+  background: radial-gradient(circle at 100% 0%, rgba(212,175,55,.14), transparent 60%);
+}
+.pricing-card.signature:hover { box-shadow: 0 22px 54px rgba(0,40,38,.28); }
+
+.pricing-badge {
+  position: absolute; top: 1.35rem; right: 1.35rem;
+  background: var(--gold);
+  color: #1a1a1a;
+  font-family: var(--ff-mono); font-size: .64rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  padding: .3rem .7rem; border-radius: var(--r-full);
+  box-shadow: 0 4px 14px rgba(212,175,55,.35);
+}
+
+.pricing-tier {
+  font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  font-family: var(--ff-mono); color: var(--primary); margin-bottom: .2rem;
+}
+.pricing-card.signature .pricing-tier { color: rgba(255,255,255,.65); }
+
+.pricing-card h3 {
+  font-size: 1.75rem; font-weight: 700; letter-spacing: -.04em;
+  color: var(--txt); line-height: 1.05; margin-bottom: .25rem;
+}
+.pricing-card.signature h3 { color: #fff; }
+
+.pricing-rates {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: .65rem;
+  background: rgba(0,75,73,.05);
+  border-radius: var(--r-md);
+  padding: 1rem;
+}
+.pricing-card.signature .pricing-rates { background: rgba(255,255,255,.06); }
+
+.pricing-rate-item { text-align: center; }
+.pricing-rate-label {
+  font-family: var(--ff-mono); font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--txt-faint); margin-bottom: .35rem;
+  display: block;
+}
+.pricing-card.signature .pricing-rate-label { color: rgba(255,255,255,.45); }
+.pricing-rate-amount {
+  font-size: 1.55rem; font-weight: 700; letter-spacing: -.04em;
+  color: var(--primary); line-height: 1;
+}
+.pricing-card.signature .pricing-rate-amount { color: var(--gold-soft); }
+.pricing-rate-unit {
+  font-size: .72rem; color: var(--txt-muted); font-family: var(--ff-mono);
+}
+.pricing-card.signature .pricing-rate-unit { color: rgba(255,255,255,.5); }
+
+.pricing-divider { height: 1px; background: var(--border); }
+.pricing-card.signature .pricing-divider { background: rgba(255,255,255,.12); }
+
+.pricing-includes {
+  font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  font-family: var(--ff-mono); color: var(--txt-faint); margin-bottom: .65rem;
+}
+.pricing-card.signature .pricing-includes { color: rgba(255,255,255,.45); }
+
+.pricing-features { list-style: none; display: grid; gap: .55rem; }
+.pricing-features li {
+  font-size: .88rem; color: var(--txt-muted);
+  display: flex; align-items: flex-start; gap: .6rem;
+}
+.pricing-card.signature .pricing-features li { color: rgba(255,255,255,.78); }
+.pricing-features li::before {
+  content: ''; flex-shrink: 0;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--primary-light);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23004B49' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: center;
+  margin-top: .1rem;
+}
+.pricing-card.signature .pricing-features li::before {
+  background-color: rgba(255,255,255,.10);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+.pricing-cta-btn {
+  display: flex; align-items: center; justify-content: center; gap: .55rem;
+  padding: .9rem 1.5rem; border-radius: var(--r-full);
+  font: inherit; font-weight: 600; font-size: .9rem;
+  background: rgba(0,75,73,.07); color: var(--primary);
+  border: 1.5px solid rgba(0,75,73,.18);
+  cursor: pointer; text-decoration: none;
+  transition: background .25s, transform .3s var(--ease), border-color .25s;
+  margin-top: auto;
+}
+.pricing-cta-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); transform: translateY(-1px); }
+.pricing-card.signature .pricing-cta-btn {
+  background: var(--gold);
+  color: #1a1a1a;
+  border-color: var(--gold);
+  box-shadow: 0 4px 18px rgba(212,175,55,.32);
+}
+.pricing-card.signature .pricing-cta-btn:hover { background: var(--gold-hover); border-color: var(--gold-hover); }
+
+.pricing-note {
+  text-align: center; margin-top: 1.75rem;
+  font-size: .8rem; color: var(--txt-faint); font-family: var(--ff-mono); letter-spacing: .06em;
+}
+
+/* ────────────────────────────────────────────────────────────
+   FOOTER
+   ──────────────────────────────────────────────────────────── */
+.footer { background: #0a1a18; color: rgba(255,255,255,.55); padding: 3.5rem 0 2rem; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 2.5rem; }
+.footer-brand p { font-size: .83rem; max-width: 28ch; margin: .65rem 0 1.25rem; color: rgba(255,255,255,.46); }
+.footer h5 {
+  font-size: .68rem; font-weight: 600; letter-spacing: .15em;
+  text-transform: uppercase; color: rgba(255,255,255,.34);
+  margin-bottom: .9rem; font-family: var(--ff-mono);
+}
+.footer ul { list-style: none; display: grid; gap: .55rem; }
+.footer ul li a { font-size: .85rem; color: rgba(255,255,255,.55); transition: color .2s, transform .25s var(--ease); display: inline-block; }
+.footer ul li a:hover { color: #fff; transform: translateX(3px); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.08);
+  font-size: .78rem;
+}
+.footer-contact-row { display: grid; gap: .4rem; font-size: .83rem; color: rgba(255,255,255,.55); }
+
+/* ────────────────────────────────────────────────────────────
+   RESPONSIVE
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 1040px) {
+  .hero-grid, .about-grid, .meal-inner, .cta-inner, .vm-grid { grid-template-columns: 1fr; }
+  .hero-right { max-width: 540px; min-height: 540px; }
+  .hero-portrait { inset: 0; }
+  .hero-img-side { top: 1.5rem; right: 0; }
+  .hero-gold-pill { right: 0; top: 1rem; }
+  .hero-stat-card { bottom: -1rem; left: 1rem; }
+  .about-cred-card { right: .75rem; bottom: -1rem; }
+  /* Drop the overlapping clay credential card on small screens */
+  @media (max-width: 720px) {
+    .about-cred-card {
+      position: static;
+      max-width: none;
+      margin-top: 1.25rem;
+      border-radius: var(--r-lg);
+    }
+  }
+  .services-grid, .testi-grid { grid-template-columns: 1fr 1fr; }
+  .process-row { grid-template-columns: 1fr 1fr; }
+  .process-step { border-bottom: 1px solid var(--border); }
+  .process-step:nth-child(2n) { border-right: none; }
+  .process-step:nth-child(3), .process-step:nth-child(4) { border-bottom: none; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stat-item:nth-child(3) { border-left: none; }
+  .mission-inner { grid-template-columns: 1fr; }
+  .section-header.two-col { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 680px) {
+  .nav-links, .nav-cta .btn-outline { display: none; }
+  .nav-cta .btn-gold { padding: .55rem .9rem; font-size: .72rem; letter-spacing: .08em; }
+  .nav { gap: .5rem; padding: .75rem 0; }
+  .wrap { width: min(calc(100% - 2rem), 1200px); }
+  .hamburger { display: flex; }
+  .mobile-menu { display: block; }
+  .services-grid, .testi-grid, .process-row, .meal-photos { grid-template-columns: 1fr; }
+  .meal-photo.tall { grid-row: span 1; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero-img-side, .hero-gold-pill { display: none; }
+  .hero-stat-card { left: 0; right: 0; bottom: -.5rem; max-width: none; border-radius: var(--r-lg); }
+  .cta-inner { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: .5rem; text-align: center; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-item + .stat-item { border-left: none; border-top: 1px solid rgba(255,255,255,.10); padding-top: 1.5rem; margin-top: .5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<form name="contact" data-netlify="true" hidden>
+  <input type="hidden" name="form-name" value="contact" />
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <input type="tel" name="phone" />
+  <textarea name="message"></textarea>
+  <input type="checkbox" name="consent" />
+  <input type="checkbox" name="marketing-consent" />
+</form>
+
+<!-- ─── AURORA + GRAIN BACKGROUND ──────────────────────────── -->
+<canvas id="aurora-canvas" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Drifting botanicals (subtle, atmospheric) -->
+<div class="bg-botanicals" aria-hidden="true">
+  <div class="drift drift-1">
+    <svg viewBox="0 0 100 100" fill="currentColor"><path d="M50 8 C30 18 18 38 18 58 C18 78 32 92 50 92 C68 92 82 78 82 58 C82 38 70 18 50 8 Z M50 18 C62 28 72 42 72 58 C72 72 62 82 50 82 C38 82 28 72 28 58 C28 42 38 28 50 18 Z"/></svg>
+  </div>
+  <div class="drift drift-2">
+    <svg viewBox="0 0 100 100" fill="currentColor"><path d="M20 80 C20 50 40 20 80 20 C80 50 60 80 20 80 Z"/></svg>
+  </div>
+  <div class="drift drift-3">
+    <svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/><circle cx="50" cy="50" r="10" fill="currentColor" opacity=".4"/></svg>
+  </div>
+  <div class="drift drift-4">
+    <svg viewBox="0 0 100 100" fill="currentColor"><path d="M50 10 L60 40 L90 50 L60 60 L50 90 L40 60 L10 50 L40 40 Z"/></svg>
+  </div>
+</div>
+
+<!-- Slow orbital ring -->
+<div class="bg-orbit" aria-hidden="true"></div>
+
+<!-- Spice particles -->
+<div class="bg-particles" aria-hidden="true">
+  <div class="spk"></div><div class="spk"></div><div class="spk"></div>
+  <div class="spk"></div><div class="spk"></div><div class="spk"></div>
+  <div class="spk"></div>
+</div>
+
+<!-- ─── LETTUCE CURSOR ─────────────────────────────────────── -->
+<div id="nz-cursor-leaf" aria-hidden="true">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="50" cy="54" rx="36" ry="30" fill="#3A9A28" opacity=".5"/>
+    <path d="M18 60 C14 48, 12 36, 20 26 C26 18, 34 14, 44 12 C50 8, 56 8, 62 11 C70 14, 76 20, 80 30 C86 44, 84 58, 76 66 C68 74, 56 78, 44 76 C30 74, 20 70, 18 60Z" fill="#69C747"/>
+    <path d="M22 58C19 46,20 34,28 24C34 16,44 13,54 14C64 15,72 22,78 34C84 48,80 62,70 68C60 76,44 76,34 72C26 68,24 66,22 58Z" fill="#5BBF3C" opacity=".55"/>
+    <ellipse cx="35" cy="30" rx="10" ry="8" fill="#8DDA5E" opacity=".55" transform="rotate(-20 35 30)"/>
+    <ellipse cx="62" cy="28" rx="9" ry="7" fill="#8DDA5E" opacity=".45" transform="rotate(15 62 28)"/>
+    <path d="M50 70 C49 58, 48 44, 50 22" stroke="#3A9A28" stroke-width="2.2" stroke-linecap="round" opacity=".7" fill="none"/>
+    <path d="M50 55 C44 48, 36 42, 28 36" stroke="#3A9A28" stroke-width="1.5" stroke-linecap="round" opacity=".55" fill="none"/>
+    <path d="M50 48 C56 42, 64 38, 70 33" stroke="#3A9A28" stroke-width="1.5" stroke-linecap="round" opacity=".55" fill="none"/>
+  </svg>
+</div>
+
+<!-- ─── ANNOUNCEMENT TICKER ────────────────────────────────── -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Data-Backed Results and Progress</span>
+    <span>Clinical Nutrition · Lahore</span>
+    <span>Cardiometabolic Specialty</span>
+    <span>200+ Clients Transformed</span>
+    <span>Featured: Type-2 Diabetes Reversal Programme</span>
+    <span>MPhil Food Sciences · Kinnaird College</span>
+    <!-- duplicate for seamless loop -->
+    <span>Data-Backed Results and Progress</span>
+    <span>Clinical Nutrition · Lahore</span>
+    <span>Cardiometabolic Specialty</span>
+    <span>200+ Clients Transformed</span>
+    <span>Featured: Type-2 Diabetes Reversal Programme</span>
+    <span>MPhil Food Sciences · Kinnaird College</span>
+  </div>
+</div>
+
+<!-- ─── HEADER ─────────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="#top" class="brand" aria-label="NutriZaika home">
+      <div class="brand-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2.2" stroke-linecap="round">
+          <path d="M12 2C7 7 5 11 5 15a7 7 0 0 0 14 0c0-4-2-8-7-13Z"/>
+          <path d="M9 16c1-3 4-5 6-8"/>
+        </svg>
+      </div>
+      <span class="brand-name">Nutri<span>Zaika</span></span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#services"><span class="nav-text"><span data-text="Services">Services</span></span></a></li>
+        <li><a href="#process"><span class="nav-text"><span data-text="How It Works">How It Works</span></span></a></li>
+        <li><a href="#mission"><span class="nav-text"><span data-text="Mission">Mission</span></span></a></li>
+        <li><a href="#meals"><span class="nav-text"><span data-text="Philosophy">Philosophy</span></span></a></li>
+        <li><a href="#about"><span class="nav-text"><span data-text="About">About</span></span></a></li>
+        <li><a href="#pricing"><span class="nav-text"><span data-text="Pricing">Pricing</span></span></a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="tel:+923332942777" class="btn btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.08.96.27 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.09-.9a2 2 0 0 1 2.11-.45c.91.43 1.85.62 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+        Call Us
+      </a>
+      <a href="#contact" class="btn btn-gold">
+        <span class="shimmer"></span>
+        Book Consultation
+      </a>
+    </div>
+    <button class="hamburger" id="nz-hamburger" aria-label="Menu" aria-expanded="false" aria-controls="nz-mobile-menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ─── MOBILE MENU ────────────────────────────── -->
+<div class="mobile-menu" id="nz-mobile-menu" aria-hidden="true">
+  <ul>
+    <li><a href="#services" data-mm-link>Services</a></li>
+    <li><a href="#process" data-mm-link>How It Works</a></li>
+    <li><a href="#mission" data-mm-link>Mission</a></li>
+    <li><a href="#meals" data-mm-link>Philosophy</a></li>
+    <li><a href="#about" data-mm-link>About</a></li>
+    <li><a href="#pricing" data-mm-link>Pricing</a></li>
+  </ul>
+  <div class="mobile-cta">
+    <a href="tel:+923332942777" class="btn btn-outline" data-mm-link>Call Us</a>
+    <a href="#contact" class="btn btn-gold" data-mm-link>Book</a>
+  </div>
+</div>
+
+<!-- ─── HERO ───────────────────────────────────────────────── -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-eyebrow-row reveal">
+        <span class="eyebrow"><span class="blink"></span>South Asia&rsquo;s Metabolic Health Studio</span>
+        <span class="eyebrow eyebrow-clay">Lahore, Pakistan · Est. 2020</span>
+      </div>
+
+      <h1 class="hero-h1">
+        <span class="line"><span class="word">Precision</span></span>
+        <span class="line"><span class="word t">Nutrition.</span></span>
+        <span class="line"><span class="word c">Desi Soul.</span></span>
+      </h1>
+
+      <p class="hero-tagline reveal delay-1">A premium, data-driven metabolic health platform built for the South Asian lifestyle. We bridge medical science and your dinner table — with prescription-grade meal strategies that actually taste like home.</p>
+
+      <div class="hero-actions reveal delay-2">
+        <a href="#contact" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          Get Your Plan
+        </a>
+        <a href="#services" class="btn btn-ghost">Explore Services <span class="arrow">→</span></a>
+      </div>
+
+      <div class="trust-pills reveal delay-3">
+        <div class="trust-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+          MPhil Food Sciences
+        </div>
+        <div class="trust-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+          Multi-Hospital Clinical
+        </div>
+        <div class="trust-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+          7+ Years Coaching
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right reveal delay-1">
+      <div class="hero-portrait">
+        <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/bd73e82b028f91e788a31019f2f6c69efdfe21dd.jpg" alt="Healthy South Asian dishes" width="800" height="1000" loading="eager"/>
+      </div>
+      <div class="hero-img-side">
+        <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/ae8b02aa8ae0ee9cdd7167bb0b4bb42e77b457b0.jpg" alt="Woman eating healthy" width="500" height="500" loading="eager"/>
+      </div>
+      <div class="hero-stat-card">
+        <div class="num-wrap">
+          <div class="big-num" data-count="200" data-suffix="+">0</div>
+          <p>Clients transformed through clinical desi meal planning</p>
+        </div>
+      </div>
+      <div class="hero-gold-pill"><span class="dot"></span>Lahore · Est. 2020</div>
+
+      <!-- Floating ingredient SVGs (replaces emoji) -->
+      <span class="ingredient ing-1" aria-hidden="true">
+        <!-- tomato -->
+        <svg width="58" height="58" viewBox="0 0 64 64">
+          <path d="M32 18 C28 10, 20 10, 18 14 C22 12, 28 16, 32 18Z" fill="#4CAF50"/>
+          <path d="M32 18 C36 10, 44 10, 46 14 C42 12, 36 16, 32 18Z" fill="#388E3C"/>
+          <circle cx="32" cy="38" r="18" fill="#E53935"/>
+          <ellipse cx="26" cy="30" rx="5" ry="4" fill="rgba(255,255,255,.32)" transform="rotate(-15 26 30)"/>
+        </svg>
+      </span>
+      <span class="ingredient ing-2" aria-hidden="true">
+        <!-- mint leaf -->
+        <svg width="56" height="56" viewBox="0 0 64 64">
+          <path d="M14 50 C14 30 26 14 48 14 C48 36 36 50 14 50Z" fill="#69C747"/>
+          <path d="M14 50 C24 38 36 28 48 14" stroke="#3A9A28" stroke-width="2" fill="none"/>
+          <path d="M30 40 C26 38 24 36 22 32" stroke="#3A9A28" stroke-width="1.5" fill="none"/>
+          <path d="M36 32 C32 30 30 28 28 24" stroke="#3A9A28" stroke-width="1.5" fill="none"/>
+        </svg>
+      </span>
+      <span class="ingredient ing-3" aria-hidden="true">
+        <!-- chili -->
+        <svg width="50" height="50" viewBox="0 0 64 64">
+          <path d="M14 14 C18 14, 22 18, 22 22 L18 22 Z" fill="#4CAF50"/>
+          <path d="M18 22 C30 24, 46 36, 50 50 C44 52, 28 44, 22 32 C20 28, 18 26, 18 22 Z" fill="#D32F2F"/>
+          <path d="M22 28 C30 30, 40 38, 46 48" stroke="rgba(255,255,255,.35)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="ingredient ing-4" aria-hidden="true">
+        <!-- turmeric/saffron sprig -->
+        <svg width="48" height="48" viewBox="0 0 64 64">
+          <ellipse cx="32" cy="40" rx="14" ry="8" fill="#D4AF37"/>
+          <ellipse cx="32" cy="38" rx="14" ry="8" fill="url(#tg)"/>
+          <path d="M32 32 L32 16" stroke="#A25B44" stroke-width="2" stroke-linecap="round"/>
+          <path d="M32 22 C28 20, 26 16, 28 12" stroke="#69C747" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M32 22 C36 20, 38 16, 36 12" stroke="#69C747" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <defs>
+            <radialGradient id="tg" cx="40%" cy="30%"><stop offset="0%" stop-color="#F4D27A"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+          </defs>
+        </svg>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOD MARQUEE ───────────────────────────────────────── -->
+<div class="marquee-band" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-item">Daal Chawal <span class="meta">Low GI · 380 kcal</span></div>
+    <div class="marquee-item"><span class="glyph">✦</span> Karahi <span class="meta">High Protein</span></div>
+    <div class="marquee-item">Palak Gosht <span class="meta">Iron · B12</span></div>
+    <div class="marquee-item"><span class="glyph">✦</span> Tandoori Roti <span class="meta">Whole Wheat</span></div>
+    <div class="marquee-item">Chana Pulao <span class="meta">Fibre · Protein</span></div>
+    <div class="marquee-item"><span class="glyph">✦</span> Saag <span class="meta">Folate · Iron</span></div>
+    <div class="marquee-item">Lassi <span class="meta">Probiotic</span></div>
+    <div class="marquee-item"><span class="glyph">✦</span> Qeema <span class="meta">Lean Mince</span></div>
+    <!-- duplicate -->
+    <div class="marquee-item">Daal Chawal <span class="meta">Low GI · 380 kcal</span></div>
+    <div class="marquee-item"><span class="glyph">✦</span> Karahi <span class="meta">High Protein</span></div>
+    <div class="marquee-item">Palak Gosht <span class="meta">Iron · B12</span></div>
+    <div class="marquee-item"><span class="glyph">✦</span> Tandoori Roti <span class="meta">Whole Wheat</span></div>
+    <div class="marquee-item">Chana Pulao <span class="meta">Fibre · Protein</span></div>
+    <div class="marquee-item"><span class="glyph">✦</span> Saag <span class="meta">Folate · Iron</span></div>
+    <div class="marquee-item">Lassi <span class="meta">Probiotic</span></div>
+    <div class="marquee-item"><span class="glyph">✦</span> Qeema <span class="meta">Lean Mince</span></div>
+  </div>
+</div>
+
+<!-- ─── STATS BAR ──────────────────────────────────────────── -->
+<div class="stats-bar">
+  <div class="wrap stats-grid">
+    <div class="stat-item">
+      <div class="num"><span class="count" data-count="5">0</span><span>+</span></div>
+      <p>Years clinical &amp; coaching experience</p>
+    </div>
+    <div class="stat-item">
+      <div class="num"><span class="count" data-count="3">0</span></div>
+      <p>Major Lahore hospital clinical postings</p>
+    </div>
+    <div class="stat-item">
+      <div class="num"><span class="count" data-count="2">0</span></div>
+      <p>Postgraduate research theses published</p>
+    </div>
+    <div class="stat-item">
+      <div class="num"><span class="count" data-count="100">0</span><span>%</span></div>
+      <p>Culturally-informed, South-Asian-first plans</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MISSION / VISION / GOALS STRIP ─────────────────────── -->
+<section class="mission-strip" id="mission">
+  <div class="mission-inner">
+    <div class="mission-block reveal">
+      <div class="icon-wrap teal">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="goal-tag teal">Mission</div>
+      <h4>Empower. Personalise. Transform.</h4>
+      <p>To empower every individual with a personalised, science-backed nutritional roadmap that respects their heritage, honors their taste, and guarantees measurable health transformations through expert human guidance.</p>
+    </div>
+    <div class="mission-block reveal delay-1">
+      <div class="icon-wrap clay">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div class="goal-tag clay">Vision</div>
+      <h4>The Gold Standard of South Asian Metabolic Health</h4>
+      <p>To become the gold standard of metabolic health in South Asia, where chronic lifestyle diseases are reversed through precision nutrition, and &ldquo;Purity&rdquo; is restored to every plate.</p>
+    </div>
+    <div class="mission-block reveal delay-2">
+      <div class="icon-wrap gold">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.1 6.3L22 9.3l-5 4.9 1.2 6.8L12 17.7 5.8 20.9 7 14.2 2 9.3l6.9-1z"/></svg>
+      </div>
+      <div class="goal-tag gold">Core Goals</div>
+      <h4>Clinical · Human · Legacy</h4>
+      <p>Bridge diagnosis and daily habits with prescription-grade meal strategies. Free our nutritionists for high-impact empathetic coaching. Reduce South Asia&rsquo;s burden of diabetes and heart disease through Food as Medicine.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ───────────────────────────────────────────── -->
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="section-header two-col reveal">
+      <div>
+        <div class="label-line"><span class="label">Our Services · 03</span></div>
+        <h2 class="section-h2">Every plan is <em>clinical,</em> personalised,<br/>built around <strong>your life.</strong></h2>
+      </div>
+      <p>No generic diet sheets. Every Nutri<span style="color:var(--gold);font-weight:600">Zaika</span> client receives a fully customised nutrition strategy aligned with their medical profile, lifestyle, and cultural taste preferences. Expect detail. Expect rigor. Expect food you actually want to eat.</p>
+    </div>
+    <div class="services-grid">
+      <article class="service-card reveal" data-magnet>
+        <div>
+          <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 0 2-2h2a2 2 0 0 0 2 2m-6 9 2 2 4-4"/></svg></div>
+          <div class="service-tag">Core Offer</div>
+          <h3>Personalised <span class="accent">Meal Planning</span></h3>
+          <p>Week-by-week South Asian meal plans calibrated to your macros, medical conditions, family pantry, and budget — never a Western template.</p>
+        </div>
+        <ul class="sl">
+          <li>Desi food you love — fully included</li>
+          <li>Macros and calories tracked precisely</li>
+          <li>Weekly review and adjustment</li>
+        </ul>
+        <a href="#contact" class="btn btn-glass">Start a Plan →</a>
+      </article>
+
+      <article class="service-card feat reveal delay-1" data-magnet>
+        <div>
+          <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg></div>
+          <div class="service-tag">Most Requested</div>
+          <h3>Cardiometabolic <span class="accent">Health</span></h3>
+          <p>Specialised clinical nutrition for insulin resistance, prediabetes, PCOS, central adiposity, and metabolic syndrome — evidence-based, zero fads.</p>
+        </div>
+        <ul class="sl">
+          <li>Blood glucose management through diet</li>
+          <li>Low-GI desi food integration</li>
+          <li>Research-backed clinical protocols</li>
+        </ul>
+        <a href="#contact" class="btn btn-glass-inv">Book Specialist →</a>
+      </article>
+
+      <article class="service-card reveal delay-2" data-magnet>
+        <div>
+          <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="service-tag">Family &amp; Groups</div>
+          <h3>Family &amp; <span class="accent">Corporate</span> Nutrition</h3>
+          <p>Group nutrition counselling for families, schools, and corporate teams. Build a culture of genuine health literacy that lasts generations.</p>
+        </div>
+        <ul class="sl">
+          <li>Family-friendly desi meal systems</li>
+          <li>Group workshops and consultations</li>
+          <li>Corporate wellness programmes</li>
+        </ul>
+        <a href="#contact" class="btn btn-glass">Learn More →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROCESS ────────────────────────────────────────────── -->
+<section class="process-bg section" id="process">
+  <div class="wrap">
+    <div class="section-header reveal" style="text-align:center;max-width:640px;margin:0 auto 2.5rem">
+      <div class="label-line" style="justify-content:center"><span class="label">The Process · 04 Steps</span></div>
+      <h2 class="section-h2">From first call to <em>lasting results.</em></h2>
+    </div>
+    <div class="process-row reveal">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <h4>Initial Assessment <span class="arrow">→</span></h4>
+        <p>Full health history, labs, lifestyle, food preferences, and goals — reviewed in detail before anything is recommended.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <h4>Custom Plan Built <span class="arrow">→</span></h4>
+        <p>A personalised weekly meal plan using desi foods you enjoy, mapped to precise nutritional targets.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <h4>2-Week &amp; 4-Week Plans <span class="arrow">→</span></h4>
+        <p>Progress review — weight, labs, hunger, adherence. Plan is adjusted to your real-world results.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <h4>Sustained Results <span class="arrow">→</span></h4>
+        <p>Long-term habit formation and health literacy. A metabolic legacy that lasts a lifetime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOD PHILOSOPHY ────────────────────────────────────── -->
+<section class="meal-section" id="meals">
+  <div class="wrap meal-inner">
+    <div class="reveal">
+      <span class="eyebrow eyebrow-inv" style="margin-bottom:1.25rem">Food Philosophy</span>
+      <h2>We never ask you to give up <em>desi food.</em></h2>
+      <p>We rethink how it is prepared, portioned, and paired. Daal chawal, karahi, palak gosht, qeema — all part of a transformative plan when structured with clinical precision.</p>
+      <div class="meal-tags">
+        <div class="meal-tag">Daal &amp; Sabzi</div>
+        <div class="meal-tag">Roti &amp; Rice</div>
+        <div class="meal-tag">Karahi &amp; Qeema</div>
+        <div class="meal-tag">Palak Gosht</div>
+        <div class="meal-tag">Yogurt &amp; Lassi</div>
+        <div class="meal-tag">Seasonal Vegetables</div>
+      </div>
+      <a href="#contact" class="btn btn-gold">
+        <span class="shimmer"></span>
+        See a Sample Plan
+      </a>
+    </div>
+    <div class="meal-photos reveal delay-1">
+      <div class="meal-photo tall" style="min-height:340px">
+        <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/bd73e82b028f91e788a31019f2f6c69efdfe21dd.jpg" alt="Healthy desi dishes" width="800" height="1200" loading="lazy"/>
+      </div>
+      <div class="meal-stack">
+        <div class="meal-photo" style="min-height:160px">
+          <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/924f5cc574723050b0e152d882a05f8aaa62e0ee.jpg" alt="Family desi meal" width="2048" height="1536" loading="lazy"/>
+        </div>
+        <div class="meal-photo" style="min-height:160px">
+          <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/69bbeac273697ee25acf0346d5f7522098d92fb1.jpg" alt="Healthy thali" width="1000" height="667" loading="lazy"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ───────────────────────────────────────── -->
+<section class="section" id="testimonials">
+  <div class="wrap">
+    <div class="section-header reveal" style="text-align:center;max-width:620px;margin:0 auto 3rem">
+      <div class="label-line" style="justify-content:center"><span class="label">Client Results</span></div>
+      <h2 class="section-h2">Real people. <em>Real results.</em></h2>
+    </div>
+    <div class="testi-grid">
+      <article class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"I am really thankful for the effort and support you put into my diet plan — every time I eat something, I am like Dayummm, this girl did a great job with this diet chart. Love and Love from my heart, Nida."</blockquote>
+        <div class="testi-result">↗ 70kg → 66.4kg</div>
+        <div class="testi-footer"><div class="testi-avatar">L</div><div><strong>Layba Jawad Mir</strong><span>Weight Management · Lahore</span></div></div>
+      </article>
+      <article class="testi-card reveal delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"Thank you so so much. This is just because of you. I started with 94 kgs. It just changed my whole life. I don't know how to thank you."</blockquote>
+        <div class="testi-result">↗ 94kg → 67kg · −27kg</div>
+        <div class="testi-footer"><div class="testi-avatar">A</div><div><strong>Ayesha Wali</strong><span>Weight Management · Lahore</span></div></div>
+      </article>
+      <article class="testi-card reveal delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"Alhamdulillah it's going great. I'm 100 kgs now. I feel so light and energetic. Everyone has started noticing the change. Lost around 16 kgs. Allah ka shukar."</blockquote>
+        <div class="testi-result">↗ Lost 16kg · Energy restored</div>
+        <div class="testi-footer"><div class="testi-avatar">A</div><div><strong>Asiya Qasim</strong><span>Weight Management · Lahore</span></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VISION DEEP DIVE ───────────────────────────────────── -->
+<section class="vm-section" id="vision">
+  <div class="wrap">
+    <div class="section-header reveal" style="margin-bottom:2.5rem">
+      <div class="label-line"><span class="label">Our Core Principles</span></div>
+      <h2 class="section-h2">Built on science.<br/><em>Driven by purpose.</em></h2>
+    </div>
+    <div class="vm-grid">
+      <div class="vm-main reveal">
+        <span class="eyebrow eyebrow-inv" style="margin-bottom:1.25rem">Vision Statement</span>
+        <h3>To become the <em>gold standard</em> of metabolic health in South Asia.</h3>
+        <div class="vm-div"></div>
+        <p>Where chronic lifestyle diseases are reversed through the power of precision nutrition, and &ldquo;Purity&rdquo; is restored to every plate. Nutri<span style="color:var(--gold);font-weight:600">Zaika</span> is not just a nutrition service — it is a metabolic movement built for South Asia.</p>
+      </div>
+      <div class="vm-aside">
+        <div class="vm-card reveal delay-1">
+          <h4><div class="dot" style="background:var(--primary)"></div>The Clinical Standard</h4>
+          <p>Bridge the gap between a doctor&rsquo;s diagnosis and a patient&rsquo;s daily habits by providing &ldquo;Prescription-Grade&rdquo; meal strategies that are easy to follow and maintain long-term.</p>
+        </div>
+        <div class="vm-card reveal delay-2">
+          <h4><div class="dot" style="background:var(--clay)"></div>The Human-Centric Loop</h4>
+          <p>Leverage cutting-edge internal technology to free our nutritionists from manual data entry, allowing them to focus 100% of their energy on empathetic, high-impact coaching.</p>
+        </div>
+        <div class="vm-card reveal delay-3">
+          <h4><div class="dot" style="background:var(--gold-hover)"></div>The Metabolic Legacy</h4>
+          <p>Reduce Pakistan&rsquo;s national burden of diabetes and heart disease by creating a sustainable, scalable model of &ldquo;Food as Medicine&rdquo; — one family at a time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ──────────────────────────────────────────────── -->
+<section class="about-section" id="about">
+  <div class="wrap about-grid">
+    <div class="about-img-col reveal">
+      <div class="about-brand-card">
+        <div class="abc-icon">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="rgba(212,175,55,.9)" stroke-width="1.6" stroke-linecap="round">
+            <path d="M12 2C7 7 5 11 5 15a7 7 0 0 0 14 0c0-4-2-8-7-13Z"/>
+            <path d="M9 16c1-3 4-5 6-8"/>
+          </svg>
+        </div>
+        <h3>Nutri<span>Zaika</span></h3>
+        <div class="tag">Premium Metabolic Health Studio · Lahore</div>
+        <div class="abc-pills">
+          <div class="abc-pill"><div class="dot" style="background:#D4AF37"></div>MPhil Food Sciences</div>
+          <div class="abc-pill"><div class="dot" style="background:#A25B44"></div>7+ Years Clinical Expertise</div>
+          <div class="abc-pill"><div class="dot" style="background:#69C747"></div>200+ Clients Transformed</div>
+          <div class="abc-pill"><div class="dot" style="background:#4ecdc4"></div>Lahore, Pakistan</div>
+        </div>
+      </div>
+      <div class="about-cred-card">
+        <strong>Kinnaird College for Women</strong>
+        <p>MPhil Food Sciences &amp; Human Nutrition · BS Hons. — Principal&rsquo;s Merit List</p>
+      </div>
+    </div>
+    <div class="about-content reveal delay-1">
+      <span class="eyebrow eyebrow-clay">About Nutri<span style="color:var(--gold)">Zaika</span></span>
+      <h2 class="section-h2" style="margin:1rem 0 1rem">A premium, <em>data-driven</em> health platform built for <strong>South Asia.</strong></h2>
+      <p>Nutri<span style="color:var(--gold);font-weight:600">Zaika</span> is a premium, data-driven health and metabolic coaching platform designed for the South Asian lifestyle. We bridge the gap between medical science and the dinner table. By combining clinical expertise with a deep understanding of traditional cuisine and modern biometrics, we provide high-achievers and patients with a &ldquo;hand-held&rdquo; journey toward achieving their health goals and optimizing physical performance.</p>
+      <p style="margin-top:.9rem">We believe that your heritage is not an obstacle to your health — it is the foundation of it. Our approach does not strip culture from nutrition. It elevates it with precision.</p>
+
+      <!-- Team profiles -->
+      <div class="team-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border)">
+
+        <!-- Nida Tu Sehar -->
+        <div style="background:var(--surface);border-radius:var(--r-xl);border:1px solid var(--border);padding:1.75rem;display:flex;flex-direction:column;gap:1rem;transition:box-shadow .35s var(--ease),transform .35s var(--ease);position:relative;overflow:hidden" class="team-card">
+          <div style="display:flex;align-items:center;gap:.9rem">
+            <div style="width:3rem;height:3rem;border-radius:50%;background:var(--primary-light);color:var(--primary);display:grid;place-items:center;flex-shrink:0">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C7 7 5 11 5 15a7 7 0 0 0 14 0c0-4-2-8-7-13Z"/><path d="M9 16c1-3 4-5 6-8"/></svg>
+            </div>
+            <div>
+              <span class="eyebrow" style="font-size:.62rem;padding:.3rem .7rem">Lead Nutritionist</span>
+            </div>
+          </div>
+          <div>
+            <h4 style="font-size:1.15rem;font-weight:700;letter-spacing:-.03em;color:var(--txt);margin-bottom:.2rem">Nida Tu Sehar</h4>
+            <p style="font-size:.78rem;font-family:var(--ff-serif);font-style:italic;color:var(--primary);margin-bottom:.75rem">MPhil Food Sciences &amp; Human Nutrition</p>
+            <p style="font-size:.85rem">Nida holds an MPhil from Kinnaird College for Women, Lahore, where she earned a place on the Principal&rsquo;s Merit List. Her research on chia seeds and blood glucose in Type-2 diabetics directly informs our cardiometabolic protocols. She brings 7+ years of clinical nutrition coaching and consulting expertise across Lahore&rsquo;s top hospitals.</p>
+          </div>
+          <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-top:auto">
+            <span class="skill-pill">Clinical Dietetics</span>
+            <span class="skill-pill">Metabolic Health</span>
+            <span class="skill-pill">Cardiometabolic Care</span>
+          </div>
+        </div>
+
+        <!-- Saad Jadoon -->
+        <div style="background:var(--surface);border-radius:var(--r-xl);border:1px solid var(--border);padding:1.75rem;display:flex;flex-direction:column;gap:1rem;transition:box-shadow .35s var(--ease),transform .35s var(--ease);position:relative;overflow:hidden" class="team-card">
+          <div style="display:flex;align-items:center;gap:.9rem">
+            <div style="width:3rem;height:3rem;border-radius:50%;background:var(--clay-light);color:var(--clay);display:grid;place-items:center;flex-shrink:0">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <div>
+              <span class="eyebrow eyebrow-clay" style="font-size:.62rem;padding:.3rem .7rem">Chief Executive Officer</span>
+            </div>
+          </div>
+          <div>
+            <h4 style="font-size:1.15rem;font-weight:700;letter-spacing:-.03em;color:var(--txt);margin-bottom:.2rem">Saad Jadoon</h4>
+            <p style="font-size:.78rem;font-family:var(--ff-serif);font-style:italic;color:var(--clay);margin-bottom:.75rem">Business Technology Management · Seneca College &amp; University of Ottawa</p>
+            <p style="font-size:.85rem">Saad is a seasoned consultant and philanthropist with over 10 years of expertise spanning consulting, product development, strategy, operations, and marketing. As Director of Systems &amp; Technology at Pleiades Housing Alliance — a non-profit he championed — he helped secure over $150 million in grants and funds. His background bridges enterprise technology with social impact, making him the driving force behind NutriZaika&rsquo;s platform vision and growth strategy.</p>
+          </div>
+          <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-top:auto">
+            <span class="skill-pill">Strategy &amp; Operations</span>
+            <span class="skill-pill">Product Development</span>
+            <span class="skill-pill">Philanthropy</span>
+          </div>
+        </div>
+      </div>
+      <style>
+        .team-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+        @media (max-width: 700px) { .team-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 600px) { .team-card { padding: 1.25rem; } }
+      </style>
+      <div class="cred-stack">
+        <div class="cred-row"><div class="cred-marker"></div><div><strong>MPhil Food Sciences &amp; Human Nutrition</strong><span>Kinnaird College for Women, Lahore</span></div></div>
+        <div class="cred-row"><div class="cred-marker"></div><div><strong>BS (Hons.) Food Sciences &amp; Human Nutrition</strong><span>Kinnaird College — Principal&rsquo;s Merit List</span></div></div>
+        <div class="cred-row"><div class="cred-marker"></div><div><strong>Nutrition Consulting &amp; Weight Loss Coaching</strong><span>7+ years active practice, Lahore, Pakistan</span></div></div>
+        <div class="cred-row"><div class="cred-marker"></div><div><strong>Clinical Expertise</strong><span>Hameed Latif · Fatima Memorial · Gulab Devi · Ganga Ram Hospital</span></div></div>
+      </div>
+      <div class="skills-row">
+        <span class="skill-pill">Weight Loss Coaching</span>
+        <span class="skill-pill">Nutrition Consulting</span>
+        <span class="skill-pill">Clinical Dietetics</span>
+        <span class="skill-pill">Metabolic Health</span>
+        <span class="skill-pill">Research &amp; Publication</span>
+        <span class="skill-pill">Cardiometabolic Care</span>
+      </div>
+      <a href="#contact" class="btn btn-primary">Book a Consultation</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ────────────────────────────────────────────────── -->
+<section class="cta-section" id="contact">
+  <div class="wrap cta-inner">
+    <div class="reveal">
+      <h2>Ready to take your health <em>seriously</em> — without leaving desi food behind?</h2>
+      <p>Book a consultation with Nida Tu Sehar. Receive a personalised clinical assessment and your first custom meal plan, built around your actual life.</p>
+    </div>
+    <div class="cta-btns reveal delay-1">
+      <a href="tel:+923332942777" class="btn btn-gold">
+        <span class="shimmer"></span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.08.96.27 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.09-.9a2 2 0 0 1 2.11-.45c.91.43 1.85.62 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+        +92 333 2942777
+      </a>
+      <a href="mailto:nutrizaika1@gmail.com" class="btn btn-inv">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email NutriZaika
+      </a>
+      <a href="https://forms.gle/ctLmuECVhSSzQs3N6" target="_blank" rel="noopener" class="btn btn-gold">
+        <span class="shimmer"></span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Book Consultation
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRICING ──────────────────────────────────────────────── -->
+<section class="pricing-section" id="pricing">
+  <div class="wrap">
+    <div class="pricing-header reveal">
+      <div class="pricing-eyebrow-row">
+        <span class="eyebrow eyebrow-gold">Simple Pricing</span>
+      </div>
+      <h2 class="section-h2">Invest in your <em>health.</em></h2>
+      <p>Flexible plans for every commitment level — from a focused 2-week reset to a full 4-week transformation. No hidden fees, no lock-ins.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Core -->
+      <div class="pricing-card reveal">
+        <div>
+          <div class="pricing-tier">Tier 01</div>
+          <h3>Core</h3>
+          <p style="font-size:.85rem;color:var(--txt-muted);margin-top:.2rem">Essentials for a focused reset</p>
+        </div>
+        <div class="pricing-rates">
+          <div class="pricing-rate-item">
+            <span class="pricing-rate-label">2-Week</span>
+            <div class="pricing-rate-amount">5,000</div>
+            <div class="pricing-rate-unit">PKR</div>
+          </div>
+          <div class="pricing-rate-item">
+            <span class="pricing-rate-label">4-Week</span>
+            <div class="pricing-rate-amount">8,500</div>
+            <div class="pricing-rate-unit">PKR</div>
+          </div>
+        </div>
+        <div class="pricing-divider"></div>
+        <div>
+          <div class="pricing-includes">Core Inclusions</div>
+          <ul class="pricing-features">
+            <li>Personalised meal plan</li>
+            <li>Macro &amp; calorie targets</li>
+            <li>Smart food swaps</li>
+            <li>1 end-of-term review</li>
+          </ul>
+        </div>
+        <a href="#contact-form" class="pricing-cta-btn">Get Started →</a>
+      </div>
+
+      <!-- Signature -->
+      <div class="pricing-card signature reveal delay-1">
+        <div class="pricing-badge">Most Popular</div>
+        <div>
+          <div class="pricing-tier">Tier 02</div>
+          <h3>Signature</h3>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.65);margin-top:.2rem">Full hand-held transformation</p>
+        </div>
+        <div class="pricing-rates">
+          <div class="pricing-rate-item">
+            <span class="pricing-rate-label">2-Week</span>
+            <div class="pricing-rate-amount">8,000</div>
+            <div class="pricing-rate-unit">PKR</div>
+          </div>
+          <div class="pricing-rate-item">
+            <span class="pricing-rate-label">4-Week</span>
+            <div class="pricing-rate-amount">14,000</div>
+            <div class="pricing-rate-unit">PKR</div>
+          </div>
+        </div>
+        <div class="pricing-divider"></div>
+        <div>
+          <div class="pricing-includes">Everything in Core, plus</div>
+          <ul class="pricing-features">
+            <li>1-hour live online face-to-face consultation</li>
+            <li>Bi-weekly check-ins &amp; progress reviews</li>
+            <li>Priority WhatsApp support</li>
+            <li>Lifestyle &amp; habit coaching</li>
+          </ul>
+        </div>
+        <a href="#contact-form" class="pricing-cta-btn">Get Started →</a>
+      </div>
+    </div>
+
+    <p class="pricing-note">Not sure which plan is right for you? <a href="#contact-form" style="color:var(--primary);text-decoration:underline">Send us a message</a> — we'll guide you.</p>
+  </div>
+</section>
+
+<!-- ─── CONTACT FORM ─────────────────────────────────────────── -->
+<section class="contact-section" id="contact-form">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-intro reveal">
+        <span class="eyebrow eyebrow-gold">Contact Us</span>
+        <h2 id="nz-contact-title">Let's start your <em>journey</em>.</h2>
+        <p id="nz-contact-sub">Tell us a little about yourself and your health goals. Nida or a member of the team will reach out within 24 hours.</p>
+
+        <div class="contact-deets">
+          <div class="contact-deet">
+            <div class="contact-deet-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.08.96.27 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.09-.9a2 2 0 0 1 2.11-.45c.91.43 1.85.62 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+            </div>
+            <div>
+              <div class="contact-deet-label">Phone</div>
+              <div class="contact-deet-val">+92 333 2942777</div>
+            </div>
+          </div>
+          <div class="contact-deet">
+            <div class="contact-deet-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact-deet-label">Email</div>
+              <div class="contact-deet-val">nutrizaika1@gmail.com</div>
+            </div>
+          </div>
+          <div class="contact-deet">
+            <div class="contact-deet-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact-deet-label">Studio</div>
+              <div class="contact-deet-val">Lahore</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-card reveal delay-1">
+        <form class="contact-form" id="nz-contact-form" name="contact" data-netlify="true" novalidate>
+          <input type="hidden" name="form-name" value="contact" />
+          <div class="contact-row">
+            <div class="contact-field">
+              <label for="nz-name">Name</label>
+              <input type="text" id="nz-name" name="name" placeholder="Your full name" autocomplete="name" required />
+              <span class="contact-field-msg" data-for="nz-name"></span>
+            </div>
+            <div class="contact-field">
+              <label for="nz-email">Email</label>
+              <input type="email" id="nz-email" name="email" placeholder="you@example.com" autocomplete="email" required />
+              <span class="contact-field-msg" data-for="nz-email"></span>
+            </div>
+          </div>
+          <div class="contact-field">
+            <label for="nz-phone">Phone Number</label>
+            <input type="tel" id="nz-phone" name="phone" placeholder="+92 ___ _______" autocomplete="tel" required />
+            <span class="contact-field-msg" data-for="nz-phone"></span>
+          </div>
+          <div class="contact-field">
+            <label for="nz-message">Message</label>
+            <textarea id="nz-message" name="message" placeholder="Tell us about your goals, current health concerns, or any questions you have…" required></textarea>
+            <span class="contact-field-msg" data-for="nz-message"></span>
+          </div>
+          <label class="contact-consent">
+            <input type="checkbox" id="nz-consent" name="consent" required />
+            <span>I agree to be contacted regarding my consultation and accept the <a href="#" style="color:var(--primary);text-decoration:underline">terms &amp; conditions</a>. My information will be kept confidential. <span style="color:var(--clay)">*</span></span>
+          </label>
+          <label class="contact-consent">
+            <input type="checkbox" id="nz-marketing" name="marketing-consent" />
+            <span>I consent to receive occasional marketing &amp; promotional communications from NutriZaika (recipes, programs, special offers). You can opt out anytime.</span>
+          </label>
+          <button type="submit" class="contact-submit" id="nz-submit">
+            <span id="nz-submit-label">Send Message</span>
+            <span class="arrow">→</span>
+          </button>
+          <div class="contact-success" role="status">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><strong>Thank you.</strong> Your message is on its way to Nida — expect a reply within 24 hours.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand" style="margin-bottom:.5rem">
+          <div class="brand-mark" style="background:rgba(255,255,255,.04)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2.2" stroke-linecap="round"><path d="M12 2C7 7 5 11 5 15a7 7 0 0 0 14 0c0-4-2-8-7-13Z"/><path d="M9 16c1-3 4-5 6-8"/></svg>
+          </div>
+          <span class="brand-name" style="color:#fff">Nutri<span style="color:var(--gold)">Zaika</span></span>
+        </div>
+        <p>Premium metabolic health &amp; nutrition studio. Lahore, Pakistan.</p>
+        <div class="footer-contact-row">
+          <span>+92 333 2942777</span>
+          <span>nutrizaika1@gmail.com</span>
+          <span>Lahore</span>
+        </div>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Personalised Meal Plans</a></li>
+          <li><a href="#services">Metabolic Health</a></li>
+          <li><a href="#services">Insulin Resistance</a></li>
+          <li><a href="#services">Weight Management</a></li>
+          <li><a href="#services">Family Nutrition</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Brand</h5>
+        <ul>
+          <li><a href="#mission">Mission &amp; Vision</a></li>
+          <li><a href="#about">About Nutri<span style="color:var(--gold)">Zaika</span></a></li>
+          <li><a href="#about">Nida Tu Sehar</a></li>
+          <li><a href="#process">How It Works</a></li>
+          <li><a href="#testimonials">Client Results</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="tel:+923332942777">Call Us</a></li>
+          <li><a href="mailto:nutrizaika1@gmail.com">Email NutriZaika</a></li>
+          <li><a href="#contact">Book Consultation</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nutri<span style="color:var(--gold)">Zaika</span>. All rights reserved.</span>
+      <span>Lahore, Pakistan · Premium Metabolic Health Studio</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ────────────────────────────────────────────────────────────
+     SCRIPTS
+     ──────────────────────────────────────────────────────────── -->
+<script>
+/* AURORA BACKGROUND */
+(function () {
+  var canvas = document.getElementById('aurora-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  var blobs = [
+    { x: .15, y: .20, r: .45, color: 'rgba(0,75,73,',    a: .12, vx:  .00018, vy:  .00012, p: 0,   pv: .004  },
+    { x: .80, y: .15, r: .38, color: 'rgba(162,91,68,',  a: .09, vx: -.00014, vy:  .00016, p: 1,   pv: .003  },
+    { x: .55, y: .70, r: .42, color: 'rgba(212,175,55,', a: .08, vx:  .00012, vy: -.00018, p: 2,   pv: .0025 },
+    { x: .10, y: .75, r: .36, color: 'rgba(0,75,73,',    a: .08, vx:  .00016, vy: -.00010, p: 3,   pv: .005  },
+    { x: .88, y: .60, r: .40, color: 'rgba(162,91,68,',  a: .06, vx: -.00018, vy:  .00014, p: 4,   pv: .0035 },
+    { x: .45, y: .35, r: .32, color: 'rgba(212,175,55,', a: .05, vx: -.00010, vy: -.00012, p: 5,   pv: .006  },
+  ];
+  var W, H, t = 0;
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  function draw() {
+    t += 1;
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < blobs.length; i++) {
+      var b = blobs[i];
+      b.x += b.vx; b.y += b.vy;
+      if (b.x < .05 || b.x > .95) b.vx *= -1;
+      if (b.y < .05 || b.y > .95) b.vy *= -1;
+      var pa = Math.sin(t * b.pv + b.p * 1.3) * .04;
+      var rad = (b.r + pa) * Math.min(W, H);
+      var cx = b.x * W, cy = b.y * H;
+      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      g.addColorStop(0,   b.color + (b.a * 1.0) + ')');
+      g.addColorStop(.4,  b.color + (b.a * .6)  + ')');
+      g.addColorStop(1,   b.color + '0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) draw();
+  else { /* draw once */ draw(); ctx && ctx.clearRect && setTimeout(function(){}, 100); }
+})();
+
+/* LETTUCE CURSOR */
+(function () {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+  var leaf = document.getElementById('nz-cursor-leaf');
+  if (!leaf) return;
+  var tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+  var cx = tx, cy = ty;
+  document.addEventListener('mousemove', function (e) {
+    tx = e.clientX; ty = e.clientY;
+  }, { passive: true });
+  function loop() {
+    cx += (tx - cx) * .22;
+    cy += (ty - cy) * .22;
+    leaf.style.left = cx + 'px';
+    leaf.style.top  = cy + 'px';
+    requestAnimationFrame(loop);
+  }
+  loop();
+  document.querySelectorAll('a, button, [data-magnet]').forEach(function (el) {
+    el.addEventListener('mouseenter', function () { document.body.classList.add('cursor-hot'); });
+    el.addEventListener('mouseleave', function () { document.body.classList.remove('cursor-hot'); });
+  });
+})();
+
+/* INTERSECTION REVEAL */
+(function () {
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+    });
+  }, { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+})();
+
+/* COUNT-UP NUMBERS */
+(function () {
+  function animateCount(el) {
+    var target = parseFloat(el.getAttribute('data-count'));
+    var suffix = el.getAttribute('data-suffix') || '';
+    var dur = 1600;
+    var start = performance.now();
+    function tick(now) {
+      var p = Math.min((now - start) / dur, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      var v = Math.round(target * ease);
+      el.textContent = v + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('[data-count]').forEach(animateCount); return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { animateCount(e.target); io.unobserve(e.target); }
+    });
+  }, { threshold: .4 });
+  document.querySelectorAll('[data-count]').forEach(function (el) { io.observe(el); });
+})();
+
+/* MAGNETIC BUTTONS + RADIAL HOVER ON CARDS */
+(function () {
+  // Track mouse on .btn for radial sheen
+  document.querySelectorAll('.btn').forEach(function (b) {
+    b.addEventListener('mousemove', function (e) {
+      var r = b.getBoundingClientRect();
+      b.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      b.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+  // Radial accent on service cards
+  document.querySelectorAll('.service-card').forEach(function (c) {
+    c.addEventListener('mousemove', function (e) {
+      var r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      c.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+  // Magnetic pull on primary CTAs
+  document.querySelectorAll('.btn-primary, .btn-gold').forEach(function (b) {
+    b.addEventListener('mousemove', function (e) {
+      var r = b.getBoundingClientRect();
+      var dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+      var dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+      b.style.transform = 'translate(' + (dx * 8) + 'px, ' + (dy * 6 - 2) + 'px)';
+    });
+    b.addEventListener('mouseleave', function () { b.style.transform = ''; });
+  });
+})();
+</script>
+
+<!-- ─── MOBILE MENU TOGGLE ───────────────────────────────── -->
+<script>
+(function () {
+  const btn = document.getElementById('nz-hamburger');
+  const menu = document.getElementById('nz-mobile-menu');
+  if (!btn || !menu) return;
+
+  const setOpen = (open) => {
+    btn.classList.toggle('is-open', open);
+    menu.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  btn.addEventListener('click', () => {
+    const isOpen = btn.classList.contains('is-open');
+    setOpen(!isOpen);
+  });
+
+  // Close when a menu link is tapped
+  menu.querySelectorAll('[data-mm-link]').forEach(a => {
+    a.addEventListener('click', () => setOpen(false));
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.classList.contains('is-open')) setOpen(false);
+  });
+
+  // Reset on resize back to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 680 && menu.classList.contains('is-open')) setOpen(false);
+  }, { passive: true });
+})();
+</script>
+
+<!-- ─── CONTACT FORM + TWEAKS PANEL ───────────────────────── -->
+<script>
+(function () {
+  // ── Tweak defaults (host-managed) ─────────────────────────
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "title": "Let's start your |journey|.",
+    "subtitle": "Tell us a little about yourself and your health goals. Nida or a member of the team will reach out within 24 hours.",
+    "buttonLabel": "Send Message",
+    "buttonStyle": "primary",
+    "accent": "#004B49",
+    "showConsent": true,
+    "showStudio": true
+  }/*EDITMODE-END*/;
+
+  let state = Object.assign({}, TWEAK_DEFAULTS);
+
+  function applyTweaks() {
+    // Title supports |word| markers for italic gold emphasis
+    const titleEl = document.getElementById('nz-contact-title');
+    if (titleEl) {
+      const html = (state.title || '').replace(/\|([^|]+)\|/g, '<em>$1</em>');
+      titleEl.innerHTML = html;
+    }
+    const subEl = document.getElementById('nz-contact-sub');
+    if (subEl) subEl.textContent = state.subtitle || '';
+    const lblEl = document.getElementById('nz-submit-label');
+    if (lblEl) lblEl.textContent = state.buttonLabel || 'Send';
+
+    const submit = document.getElementById('nz-submit');
+    if (submit) submit.dataset.variant = state.buttonStyle || 'primary';
+
+    const consent = document.querySelector('.contact-consent');
+    if (consent) consent.style.display = state.showConsent ? 'flex' : 'none';
+    const studio = document.querySelectorAll('.contact-deet');
+    if (studio[2]) studio[2].style.display = state.showStudio ? 'flex' : 'none';
+
+    // Accent color overrides primary on form submit + focus
+    document.documentElement.style.setProperty('--nz-contact-accent', state.accent || '#004B49');
+  }
+
+  // ── Form validation + fake submit ─────────────────────────
+  function validateField(input) {
+    const wrap = input.closest('.contact-field');
+    const msg = wrap ? wrap.querySelector('.contact-field-msg') : null;
+    let err = '';
+    const v = input.value.trim();
+    if (input.required && !v) err = 'Required';
+    else if (input.type === 'email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) err = 'Invalid email';
+    else if (input.type === 'tel' && v && !/^[+\d][\d\s\-()]{6,}$/.test(v)) err = 'Invalid phone';
+    if (wrap) wrap.classList.toggle('error', !!err);
+    if (msg) msg.textContent = err;
+    return !err;
+  }
+
+  const form = document.getElementById('nz-contact-form');
+  if (form) {
+    form.querySelectorAll('input, textarea').forEach(el => {
+      el.addEventListener('blur', () => validateField(el));
+      el.addEventListener('input', () => {
+        const wrap = el.closest('.contact-field');
+        if (wrap && wrap.classList.contains('error')) validateField(el);
+      });
+    });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fields = form.querySelectorAll('input[required], textarea[required]');
+      let ok = true;
+      fields.forEach(f => { if (!validateField(f)) ok = false; });
+      const consent = document.getElementById('nz-consent');
+      if (consent && consent.required && !consent.checked) {
+        ok = false;
+        consent.parentElement.style.color = 'var(--clay)';
+      } else if (consent) {
+        consent.parentElement.style.color = '';
+      }
+      if (!ok) return;
+      const fd = new FormData(form);
+      const params = new URLSearchParams();
+      fd.forEach((v, k) => { params.append(k, typeof v === 'string' ? v : ''); });
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      })
+        .then(() => { form.classList.add('is-sent'); })
+        .catch((err) => { console.error('Form submission error:', err); alert('Sorry, something went wrong submitting the form. Please try again or email us directly.'); });
+    });
+  }
+
+  // ── Tweaks panel UI ───────────────────────────────────────
+  function buildTweaksPanel() {
+    const panel = document.createElement('div');
+    panel.className = 'nz-tweaks';
+    panel.innerHTML = `
+      <div class="nz-tweaks-hd">
+        <b>Tweaks</b>
+        <button class="nz-tweaks-x" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="nz-tweaks-body">
+        <div class="nz-tweak-section">Contact Form</div>
+
+        <div class="nz-tweak-row">
+          <label>Title <span class="v">use |word| for italic</span></label>
+          <input type="text" data-key="title" />
+        </div>
+
+        <div class="nz-tweak-row">
+          <label>Subtitle</label>
+          <input type="text" data-key="subtitle" />
+        </div>
+
+        <div class="nz-tweak-row">
+          <label>Button Label</label>
+          <input type="text" data-key="buttonLabel" />
+        </div>
+
+        <div class="nz-tweak-row">
+          <label>Button Style</label>
+          <div class="nz-tweak-segs" data-key="buttonStyle">
+            <button data-val="primary">Teal</button>
+            <button data-val="gold">Gold</button>
+            <button data-val="outline">Outline</button>
+          </div>
+        </div>
+
+        <div class="nz-tweak-row">
+          <label>Accent Color <span class="v" data-v="accent"></span></label>
+          <input type="color" data-key="accent" />
+        </div>
+
+        <div class="nz-tweak-section">Visibility</div>
+
+        <div class="nz-tweak-row nz-tweak-toggle">
+          <span>Consent checkbox</span>
+          <button type="button" data-key="showConsent"></button>
+        </div>
+
+        <div class="nz-tweak-row nz-tweak-toggle">
+          <span>Studio location</span>
+          <button type="button" data-key="showStudio"></button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(panel);
+
+    // Wire inputs
+    panel.querySelectorAll('input[data-key], .nz-tweak-segs[data-key], .nz-tweak-toggle button[data-key]').forEach(el => {
+      const key = el.dataset.key;
+      // Init values
+      if (el.tagName === 'INPUT') {
+        el.value = state[key];
+      } else if (el.classList.contains('nz-tweak-segs')) {
+        el.querySelectorAll('button').forEach(b => b.classList.toggle('is-on', b.dataset.val === state[key]));
+      } else {
+        // toggle
+        el.classList.toggle('is-on', !!state[key]);
+      }
+
+      // Wire change events
+      if (el.tagName === 'INPUT') {
+        el.addEventListener('input', () => {
+          state[key] = el.value;
+          applyTweaks();
+          persist({ [key]: el.value });
+          const vSpan = panel.querySelector(`[data-v="${key}"]`);
+          if (vSpan) vSpan.textContent = el.value;
+        });
+        const vSpan = panel.querySelector(`[data-v="${key}"]`);
+        if (vSpan) vSpan.textContent = el.value;
+      } else if (el.classList.contains('nz-tweak-segs')) {
+        el.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            el.querySelectorAll('button').forEach(b => b.classList.remove('is-on'));
+            btn.classList.add('is-on');
+            state[key] = btn.dataset.val;
+            applyTweaks();
+            persist({ [key]: btn.dataset.val });
+          });
+        });
+      } else {
+        el.addEventListener('click', () => {
+          state[key] = !state[key];
+          el.classList.toggle('is-on', state[key]);
+          applyTweaks();
+          persist({ [key]: state[key] });
+        });
+      }
+    });
+
+    // Header drag
+    const hd = panel.querySelector('.nz-tweaks-hd');
+    let drag = null;
+    hd.addEventListener('pointerdown', (e) => {
+      if (e.target.classList.contains('nz-tweaks-x')) return;
+      const r = panel.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
+      hd.setPointerCapture(e.pointerId);
+    });
+    hd.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      panel.style.left = (e.clientX - drag.dx) + 'px';
+      panel.style.top = (e.clientY - drag.dy) + 'px';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+    });
+    hd.addEventListener('pointerup', () => { drag = null; });
+
+    // Close button
+    panel.querySelector('.nz-tweaks-x').addEventListener('click', () => {
+      panel.classList.remove('is-open');
+      try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch(e) {}
+    });
+
+    return panel;
+  }
+
+  function persist(edits) {
+    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*'); } catch(e) {}
+  }
+
+  // ── Host protocol ─────────────────────────────────────────
+  let panelEl = null;
+  window.addEventListener('message', (e) => {
+    const data = e && e.data;
+    if (!data || typeof data !== 'object') return;
+    if (data.type === '__activate_edit_mode') {
+      if (!panelEl) panelEl = buildTweaksPanel();
+      panelEl.classList.add('is-open');
+    } else if (data.type === '__deactivate_edit_mode') {
+      if (panelEl) panelEl.classList.remove('is-open');
+    }
+  });
+
+  // Apply initial state then announce availability
+  applyTweaks();
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e) {}
+})();
+</script>
+
+</body>
+</html>
